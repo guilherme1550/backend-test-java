@@ -1,0 +1,1 @@
+INSERT INTO estacionamento(id, nome, cnpj, endereco, telefone, qtd_vagas_moto, qtd_vagas_carro) VALUES(1, 'Estacione Aqui', '11222333000112', 'Rua 2', '13999999999', 10, 12);
