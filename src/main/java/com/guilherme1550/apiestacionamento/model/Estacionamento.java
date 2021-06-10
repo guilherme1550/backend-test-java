@@ -27,6 +27,12 @@ public class Estacionamento {
 	@Column(name = "cnpj", updatable = true, nullable = false)
 	private String cnpj;
 	
+	@Column(name = "email", updatable = true, nullable = false)
+	private String email;
+	
+	@Column(name = "senha", updatable = true, nullable = false)
+	private String senha;
+	
 	@Column(name = "endereco", updatable = true, nullable = false)
 	private String endereco;
 	
@@ -61,6 +67,22 @@ public class Estacionamento {
 
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 	public String getEndereco() {
