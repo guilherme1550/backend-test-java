@@ -11,37 +11,34 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class Estacionamento {
-	
+
 	@Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-        name = "UUID",
-        strategy = "org.hibernate.id.UUIDGenerator"
-    )
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
 
 	@Column(name = "nome", updatable = true, nullable = false)
 	private String nome;
-	
+
 	@Column(name = "cnpj", updatable = true, nullable = false)
 	private String cnpj;
-	
+
 	@Column(name = "email", updatable = true, nullable = false)
 	private String email;
-	
+
 	@Column(name = "senha", updatable = true, nullable = false)
 	private String senha;
-	
+
 	@Column(name = "endereco", updatable = true, nullable = false)
 	private String endereco;
-	
+
 	@Column(name = "telefone", updatable = true, nullable = false)
 	private String telefone;
-	
+
 	@Column(name = "qtd_vagas_moto", updatable = true, nullable = false)
 	private int qtdVagasMoto;
-	
+
 	@Column(name = "qtd_vagas_carro", updatable = true, nullable = false)
 	private int qtdVagasCarro;
 
