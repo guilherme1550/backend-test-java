@@ -40,6 +40,18 @@ public class EnderecoEmpresa {
 	@ManyToOne
 	private Empresa empresa;
 
+	public EnderecoEmpresa() {}
+	
+	public EnderecoEmpresa(String cep, String uf, String bairro, String logradouro, String numero, String complemento, Empresa empresa) {
+		this.cep = cep;
+		this.uf = uf;
+		this.bairro = bairro;
+		this.logradouro = logradouro;
+		this.numero = numero;
+		this.complemento = complemento;
+		this.empresa = empresa;
+	}
+	
 	public UUID getId() {
 		return id;
 	}
