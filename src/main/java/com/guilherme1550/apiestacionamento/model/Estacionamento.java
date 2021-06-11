@@ -30,12 +30,6 @@ public class Estacionamento {
 	@Column(name = "senha", updatable = true, nullable = false)
 	private String senha;
 
-	@Column(name = "endereco", updatable = true, nullable = false)
-	private String endereco;
-
-	@Column(name = "telefone", updatable = true, nullable = false)
-	private String telefone;
-
 	@Column(name = "qtd_vagas_moto", updatable = true, nullable = false)
 	private int qtdVagasMoto;
 
@@ -80,22 +74,6 @@ public class Estacionamento {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
-	}
-
-	public String getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
-	}
-
-	public String getTelefone() {
-		return telefone;
-	}
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
 	}
 
 	public int getQtdVagasMoto() {
