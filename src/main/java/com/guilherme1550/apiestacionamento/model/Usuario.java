@@ -23,9 +23,6 @@ public class Usuario {
 	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
 	
-	@Column(name = "cpf", updatable = true, nullable = false)
-	private String cpf;
-	
 	@Column(name = "email", updatable = true, nullable = false)
 	private String email;
 	
@@ -44,14 +41,6 @@ public class Usuario {
 
 	public void setId(UUID id) {
 		this.id = id;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
 	}
 
 	public String getEmail() {
