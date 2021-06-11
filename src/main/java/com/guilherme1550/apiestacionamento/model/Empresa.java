@@ -24,6 +24,15 @@ public class Empresa {
 	@Column(name = "cnpj", updatable = true, nullable = false)
 	private String cnpj;
 	
+	public Empresa() {}
+	
+	
+	public Empresa(String nome, String cnpj) {
+		this.nome = nome;
+		this.cnpj = cnpj;
+	}
+	
+	
 	public UUID getId() {
 		return id;
 	}

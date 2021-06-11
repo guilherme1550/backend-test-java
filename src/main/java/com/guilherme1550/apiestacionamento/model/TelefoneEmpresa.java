@@ -24,6 +24,13 @@ public class TelefoneEmpresa {
 	
 	@ManyToOne
 	private Empresa empresa;
+	
+	public TelefoneEmpresa() {}
+	
+	public TelefoneEmpresa(String numero, Empresa empresa) {
+		this.numero = numero;
+		this.empresa = empresa;
+	}
 
 	public UUID getId() {
 		return id;
