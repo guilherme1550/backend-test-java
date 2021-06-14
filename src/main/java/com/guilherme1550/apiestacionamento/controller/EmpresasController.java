@@ -16,9 +16,11 @@ import com.guilherme1550.apiestacionamento.controller.form.CadastroEmpresaForm;
 import com.guilherme1550.apiestacionamento.model.Empresa;
 import com.guilherme1550.apiestacionamento.model.EnderecoEmpresa;
 import com.guilherme1550.apiestacionamento.model.TelefoneEmpresa;
+import com.guilherme1550.apiestacionamento.model.Usuario;
 import com.guilherme1550.apiestacionamento.repository.EmpresaRepository;
 import com.guilherme1550.apiestacionamento.repository.EnderecoEmpresaRepository;
 import com.guilherme1550.apiestacionamento.repository.TelefoneEmpresaRepository;
+import com.guilherme1550.apiestacionamento.repository.UsuarioRepository;
 
 @RestController
 @RequestMapping("/empresas")
@@ -32,6 +34,9 @@ public class EmpresasController {
 	
 	@Autowired
 	private TelefoneEmpresaRepository telefoneEmpresaRepository;
+	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 
 	@PostMapping
 	@Transactional
@@ -46,7 +51,10 @@ public class EmpresasController {
 		List<TelefoneEmpresa> telefoneEmpresa = form.getTelefone().stream()
 				.map(telefone -> telefone.converterTelefoneEmpresa(empresaCadastrada)).collect(Collectors.toList());
 		telefoneEmpresa.forEach(telefone -> telefoneEmpresaRepository.save(telefone));
-
+		
+		Usuario usuario = form.getUsuario().converterUsuario(empresaCadastrada);
+		usuarioRepository.save(usuario);
+		
 		return ResponseEntity.ok().build();
 	}
 }
