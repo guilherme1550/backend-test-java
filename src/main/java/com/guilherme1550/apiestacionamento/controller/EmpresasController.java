@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,8 @@ import com.guilherme1550.apiestacionamento.repository.EmpresaRepository;
 import com.guilherme1550.apiestacionamento.repository.EnderecoEmpresaRepository;
 import com.guilherme1550.apiestacionamento.repository.TelefoneEmpresaRepository;
 import com.guilherme1550.apiestacionamento.repository.UsuarioRepository;
+import com.guilherme1550.apiestacionamento.service.EmpresaService;
+import com.guilherme1550.apiestacionamento.service.UsuarioService;
 
 @RestController
 @RequestMapping("/empresas")
@@ -37,10 +40,26 @@ public class EmpresasController {
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private EmpresaService empresaService;
+	
+	@Autowired
+	private UsuarioService usuarioService;
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<?> cadastrar(@RequestBody CadastroEmpresaForm form) {
+	public ResponseEntity<?> cadastrar(@RequestBody @Valid CadastroEmpresaForm form) {
+		
+		String mensagem = empresaService.verificarSeCnpjExiste(form.getCnpj());
+		if (mensagem != null) 
+			return ResponseEntity.badRequest().body(mensagem);
+		
+		mensagem = usuarioService.verificarSeEmailExiste(form.getUsuario().getEmail());
+		if (mensagem != null)
+			return ResponseEntity.badRequest().body(mensagem);
+		
+		
 		Empresa empresa = form.converterEmpresa();
 		Empresa empresaCadastrada = empresaRepository.save(empresa);
 
