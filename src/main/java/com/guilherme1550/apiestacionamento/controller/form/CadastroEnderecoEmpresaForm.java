@@ -1,14 +1,35 @@
 package com.guilherme1550.apiestacionamento.controller.form;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import com.guilherme1550.apiestacionamento.model.Empresa;
 import com.guilherme1550.apiestacionamento.model.EnderecoEmpresa;
 
 public class CadastroEnderecoEmpresaForm {
+	
+	@NotNull(message = "O campo não pode ser nulo, favor digitar o CEP da Empresa")
+	@NotEmpty(message = "O campo não pode ser vazio, favor digitar o CEP da Empresa")
 	private String cep;
+	
+	@NotNull(message = "O campo não pode ser nulo, favor digitar o Estado da Empresa")
+	@NotEmpty(message = "O campo não pode ser vazio, favor digitar o Estado da Empresa")
 	private String uf;
+	
+	@NotNull(message = "O campo não pode ser nulo, favor digitar o Bairro da Empresa")
+	@NotEmpty(message = "O campo não pode ser vazio, favor digitar o Bairro da Empresa")
 	private String bairro;
+	
+	@NotNull(message = "O campo não pode ser nulo, favor digitar o Logradouro da Empresa")
+	@NotEmpty(message = "O campo não pode ser vazio, favor digitar o Logradouro da Empresa")
 	private String logradouro;
+	
+	@NotNull(message = "O campo não pode ser nulo, favor digitar o Número da Empresa")
+	@NotEmpty(message = "O campo não pode ser vazio, favor digitar o Número da Empresa")
 	private String numero;
+	
+	@NotNull(message = "O campo não pode ser nulo, favor digitar o Complemento da Empresa")
+	@NotEmpty(message = "O campo não pode ser vazio, favor digitar o Complemento da Empresa")
 	private String complemento;
 	
 	public String getCep() {
