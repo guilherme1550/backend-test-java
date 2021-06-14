@@ -11,7 +11,7 @@ public class CadastroEmpresaForm {
 	private String cnpj;
 	private List<CadastroEnderecoEmpresaForm> endereco;
 	private List<CadastroTelefoneEmpresaForm> telefone;
-	private Usuario usuario;
+	private CadastroUsuarioEmpresaForm usuario;
 	
 	public String getNome() {
 		return nome;
@@ -45,11 +45,11 @@ public class CadastroEmpresaForm {
 		this.endereco = endereco;
 	}
 	
-	public Usuario getUsuario() {
+	public CadastroUsuarioEmpresaForm getUsuario() {
 		return usuario;
 	}
 	
-	public void setUsuario(Usuario usuario) {
+	public void setUsuario(CadastroUsuarioEmpresaForm usuario) {
 		this.usuario = usuario;
 	}
 	

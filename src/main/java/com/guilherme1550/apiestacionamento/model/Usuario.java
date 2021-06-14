@@ -4,6 +4,8 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -25,11 +27,20 @@ public class Usuario {
 	@Column(name = "senha", updatable = true, nullable = false)
 	private String senha;
 	
-	@Column(name = "perfil", updatable = true, nullable = false)
-	private String perfil;
+	@Enumerated(EnumType.STRING)
+	private Perfil perfil = Perfil.USUARIO_EMPRESA;
 	
 	@ManyToOne
 	private Empresa empresa;
+	
+	public Usuario() {}
+	
+	public Usuario(String email, String senha, Empresa empresa) {
+		this.email = email;
+		this.senha = senha;
+		this.empresa = empresa;
+	}
+	
 	
 	public UUID getId() {
 		return id;
@@ -63,11 +74,11 @@ public class Usuario {
 		this.empresa = empresa;
 	}
 
-	public String getPerfis() {
+	public Perfil getPerfil() {
 		return perfil;
 	}
 
-	public void setPerfis(String perfil) {
+	public void setPerfis(Perfil perfil) {
 		this.perfil = perfil;
 	}
 	
