@@ -16,8 +16,8 @@ public class CadastroEmpresaForm {
 	private String nome;
 	
 	@CNPJ
-	@NotNull(message = "O campo não pode ser nulo, favor digitar o nome da Empresa")
-	@NotEmpty(message = "O campo não pode ser vazio, favor digitar o nome da Empresa")
+	@NotNull(message = "O campo não pode ser nulo, favor digitar o Cnpj da Empresa")
+	@NotEmpty(message = "O campo não pode ser vazio, favor digitar o Cnpj da Empresa")
 	private String cnpj;
 	
 	@Valid

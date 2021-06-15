@@ -30,12 +30,15 @@ public class Estacionamento {
 	@Column(name = "senha", updatable = true, nullable = false)
 	private String senha;
 
-	@Column(name = "qtd_vagas_moto", updatable = true, nullable = false)
-	private int qtdVagasMoto;
-
-	@Column(name = "qtd_vagas_carro", updatable = true, nullable = false)
-	private int qtdVagasCarro;
-
+	public Estacionamento() {}
+	
+	public Estacionamento(String nome, String cnpj, String email, String senha) {
+		this.nome = nome;
+		this.cnpj = cnpj;
+		this.email = email;
+		this.senha = senha;
+	}
+	
 	public UUID getId() {
 		return id;
 	}
@@ -75,21 +78,4 @@ public class Estacionamento {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-
-	public int getQtdVagasMoto() {
-		return qtdVagasMoto;
-	}
-
-	public void setQtdVagasMoto(int qtdVagasMoto) {
-		this.qtdVagasMoto = qtdVagasMoto;
-	}
-
-	public int getQtdVagasCarro() {
-		return qtdVagasCarro;
-	}
-
-	public void setQtdVagasCarro(int qtdVagasCarro) {
-		this.qtdVagasCarro = qtdVagasCarro;
-	}
-
 }

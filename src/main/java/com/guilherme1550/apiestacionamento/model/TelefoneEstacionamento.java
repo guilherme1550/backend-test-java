@@ -24,4 +24,11 @@ public class TelefoneEstacionamento {
 	
 	@ManyToOne
 	private Estacionamento estacionamento;
+	
+	public TelefoneEstacionamento() {}
+	
+	public TelefoneEstacionamento(String numero, Estacionamento estacionamento) {
+		this.numero = numero;
+		this.estacionamento = estacionamento;
+	}
 }

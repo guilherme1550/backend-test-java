@@ -18,27 +18,49 @@ public class EnderecoEstacionamento {
 	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
-	
+
 	@Column(name = "cep", updatable = true, nullable = false)
 	private String cep;
-	
+
 	@Column(name = "uf", updatable = true, nullable = false)
 	private String uf;
-	
+
 	@Column(name = "bairro", updatable = true, nullable = false)
 	private String bairro;
-	
+
 	@Column(name = "logradouro", updatable = true, nullable = false)
 	private String logradouro;
-	
+
 	@Column(name = "numero", updatable = true, nullable = false)
 	private String numero;
-	
+
 	@Column(name = "complemento", updatable = true, nullable = false)
 	private String complemento;
 
+	@Column(name = "qtd_vagas_moto", updatable = true, nullable = false)
+	private Integer qtdVagasMoto;
+
+	@Column(name = "qtd_vagas_carro", updatable = true, nullable = false)
+	private Integer qtdVagasCarro;
+
 	@ManyToOne
 	private Estacionamento estacionamento;
+
+	public EnderecoEstacionamento() {
+	}
+
+	public EnderecoEstacionamento(String cep, String uf, String bairro, String logradouro, String numero,
+			String complemento, Integer qtdVagasMoto, Integer qtdVagasCarro, Estacionamento estacionamento) {
+		this.cep = cep;
+		this.uf = uf;
+		this.bairro = bairro;
+		this.logradouro = logradouro;
+		this.numero = numero;
+		this.complemento = complemento;
+		this.qtdVagasMoto = qtdVagasMoto;
+		this.qtdVagasCarro = qtdVagasCarro;
+		this.estacionamento = estacionamento;
+	}
 
 	public UUID getId() {
 		return id;
@@ -96,6 +118,22 @@ public class EnderecoEstacionamento {
 		this.complemento = complemento;
 	}
 
+	public Integer getQtdVagasMoto() {
+		return qtdVagasMoto;
+	}
+
+	public void setQtdVagasMoto(Integer qtdVagasMoto) {
+		this.qtdVagasMoto = qtdVagasMoto;
+	}
+
+	public Integer getQtdVagasCarro() {
+		return qtdVagasCarro;
+	}
+
+	public void setQtdVagasCarro(Integer qtdVagasCarro) {
+		this.qtdVagasCarro = qtdVagasCarro;
+	}
+
 	public Estacionamento getEstacionamento() {
 		return estacionamento;
 	}
@@ -103,5 +141,5 @@ public class EnderecoEstacionamento {
 	public void setEstacionamento(Estacionamento estacionamento) {
 		this.estacionamento = estacionamento;
 	}
-	
+
 }
