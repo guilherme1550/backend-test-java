@@ -1,1 +1,1 @@
-INSERT INTO estacionamento(id, nome, cnpj, email, senha, qtd_vagas_moto, qtd_vagas_carro) VALUES(1, 'Estacione Aqui', '11222333000112', 'estacionamento@email.com', '123456', 10, 12);
+INSERT INTO estacionamento(id, nome, cnpj, email, senha) VALUES(1, 'Estacione Aqui', '11222333000112', 'estacionamento@email.com', '123456');
