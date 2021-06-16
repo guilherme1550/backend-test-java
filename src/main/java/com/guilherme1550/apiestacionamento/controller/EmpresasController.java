@@ -17,12 +17,14 @@ import com.guilherme1550.apiestacionamento.controller.form.CadastroEmpresaForm;
 import com.guilherme1550.apiestacionamento.model.Empresa;
 import com.guilherme1550.apiestacionamento.model.EnderecoEmpresa;
 import com.guilherme1550.apiestacionamento.model.TelefoneEmpresa;
-import com.guilherme1550.apiestacionamento.model.Usuario;
+import com.guilherme1550.apiestacionamento.model.UsuarioEmpresa;
 import com.guilherme1550.apiestacionamento.repository.EmpresaRepository;
 import com.guilherme1550.apiestacionamento.repository.EnderecoEmpresaRepository;
+import com.guilherme1550.apiestacionamento.repository.PerfilRepository;
 import com.guilherme1550.apiestacionamento.repository.TelefoneEmpresaRepository;
-import com.guilherme1550.apiestacionamento.repository.UsuarioRepository;
+import com.guilherme1550.apiestacionamento.repository.UsuarioEmpresaRepository;
 import com.guilherme1550.apiestacionamento.service.EmpresaService;
+import com.guilherme1550.apiestacionamento.service.PerfilService;
 import com.guilherme1550.apiestacionamento.service.UsuarioService;
 
 @RestController
@@ -39,13 +41,16 @@ public class EmpresasController {
 	private TelefoneEmpresaRepository telefoneEmpresaRepository;
 	
 	@Autowired
-	private UsuarioRepository usuarioRepository;
+	private UsuarioEmpresaRepository usuarioRepository;
 	
 	@Autowired
 	private EmpresaService empresaService;
 	
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private PerfilService perfilService;
 
 	@PostMapping
 	@Transactional
@@ -71,7 +76,7 @@ public class EmpresasController {
 				.map(telefone -> telefone.converterTelefoneEmpresa(empresaCadastrada)).collect(Collectors.toList());
 		telefoneEmpresa.forEach(telefone -> telefoneEmpresaRepository.save(telefone));
 		
-		Usuario usuario = form.getUsuario().converterUsuario(empresaCadastrada);
+		UsuarioEmpresa usuario = form.getUsuario().converterUsuario(empresaCadastrada, perfilService);
 		usuarioRepository.save(usuario);
 		
 		return ResponseEntity.ok().build();
