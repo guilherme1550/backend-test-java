@@ -41,7 +41,7 @@ public class EstacionamentosController {
 	@PostMapping
 	@Transactional
 	public ResponseEntity<?> cadastrar(@RequestBody @Valid CadastroEstacionamentoForm form) {
-
+		
 		String mensagem = estacionamentoService.verificarSeEmailOuCnpjExiste(form.getEmail(), form.getCnpj());
 		if (mensagem != null)
 			return ResponseEntity.badRequest().body(mensagem);

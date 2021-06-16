@@ -1,6 +1,5 @@
 package com.guilherme1550.apiestacionamento.model;
 
-import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +16,7 @@ public class EnderecoEstacionamento {
 	@GeneratedValue(generator = "UUID")
 	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	@Column(name = "id", updatable = false, nullable = false)
-	private UUID id;
+	private String id;
 
 	@Column(name = "cep", updatable = true, nullable = false)
 	private String cep;
@@ -62,11 +61,11 @@ public class EnderecoEstacionamento {
 		this.estacionamento = estacionamento;
 	}
 
-	public UUID getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
