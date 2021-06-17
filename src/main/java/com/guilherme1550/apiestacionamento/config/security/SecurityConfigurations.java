@@ -10,9 +10,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.guilherme1550.apiestacionamento.repository.UsuarioEmpresaRepository;
 import com.guilherme1550.apiestacionamento.service.AutenticacaoUsuarioEmpresaService;
+import com.guilherme1550.apiestacionamento.service.TokenService;
 
 @EnableWebSecurity
 @Configuration
@@ -20,6 +24,12 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	AutenticacaoUsuarioEmpresaService autenticacaoUsuarioEmpresa;
+	
+	@Autowired
+	TokenService tokenService;
+	
+	@Autowired
+	UsuarioEmpresaRepository usuarioEmpresaRepository;
 	
 	@Override
 	@Bean
@@ -38,9 +48,14 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.antMatchers(HttpMethod.GET, "/empresas/**").permitAll()
 			.antMatchers(HttpMethod.POST,"/empresas/**" ).permitAll()
+			.antMatchers(HttpMethod.POST,"/usuario-empresa/auth" ).permitAll()
 			.antMatchers("/h2-console/**").permitAll()
+			.anyRequest().authenticated()
 			.and().csrf().disable()
-			.headers().frameOptions().sameOrigin();
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and().headers().frameOptions().sameOrigin()
+			.and().addFilterBefore(new AutenticacaoViaTokenFilter(tokenService, usuarioEmpresaRepository), 
+					UsernamePasswordAuthenticationFilter.class);
 	}
 
 	@Override
