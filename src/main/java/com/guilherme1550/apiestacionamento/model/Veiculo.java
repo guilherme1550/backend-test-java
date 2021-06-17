@@ -1,6 +1,5 @@
 package com.guilherme1550.apiestacionamento.model;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,33 +12,47 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class Veiculo {
-	
+
 	@Id
 	@GeneratedValue(generator = "UUID")
 	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	@Column(name = "id", updatable = false, nullable = false)
 	private String id;
-	
+
 	@Column(name = "marca", updatable = true, nullable = false)
 	private String marca;
-	
+
 	@Column(name = "modelo", updatable = true, nullable = false)
 	private String modelo;
-	
+
 	@Column(name = "cor", updatable = true, nullable = false)
 	private String cor;
-	
+
 	@Column(name = "placa", updatable = true, nullable = false)
 	private String placa;
-	
+
 	@Enumerated(EnumType.STRING)
 	private Tipo tipo;
-	
+
 	@ManyToOne
 	private Empresa empresa;
-	
+
 	@ManyToOne
 	private EnderecoEstacionamento enderecoEstacionamento;
+
+	public Veiculo() {
+	}
+
+	public Veiculo(String marca, String modelo, String cor, String placa, Tipo tipo, Empresa empresa,
+			EnderecoEstacionamento enderecoEstacionamento) {
+		this.marca = marca;
+		this.modelo = modelo;
+		this.cor = cor;
+		this.placa = placa;
+		this.tipo = tipo;
+		this.empresa = empresa;
+		this.enderecoEstacionamento = enderecoEstacionamento;
+	}
 
 	public String getId() {
 		return id;
