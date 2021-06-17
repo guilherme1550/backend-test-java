@@ -1,6 +1,7 @@
 package com.guilherme1550.apiestacionamento.config.security;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -40,12 +41,12 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
 
 	private void autenticarUsuarioEmpresa(String token) {
 		String idUsuarioEmpresa = this.tokenService.getIdUsuarioEmpresa(token);
-		UsuarioEmpresa usuarioEmpresa = usuarioEmpresaRepository.findById(idUsuarioEmpresa).get();
-
-		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuarioEmpresa,
-				null, usuarioEmpresa.getAuthorities());
-
-		SecurityContextHolder.getContext().setAuthentication(authentication);
+		Optional<UsuarioEmpresa> usuarioEmpresa = usuarioEmpresaRepository.findById(idUsuarioEmpresa);
+		if (usuarioEmpresa.isPresent()) {
+			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuarioEmpresa.get(),
+					null, usuarioEmpresa.get().getAuthorities());
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+		}
 	}
 
 	private String recuperarToken(HttpServletRequest request) {
