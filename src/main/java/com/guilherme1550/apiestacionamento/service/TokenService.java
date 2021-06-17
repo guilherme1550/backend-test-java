@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.guilherme1550.apiestacionamento.model.UsuarioEmpresa;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -32,5 +33,19 @@ public class TokenService {
 				.setExpiration(dataExpiracao)
 				.signWith(SignatureAlgorithm.HS256, secret)
 				.compact();
+	}
+	
+	public Boolean validarToken(String token) {
+		try {
+			Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	public String getIdUsuarioEmpresa(String token) {
+		Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
+		return claims.getSubject();
 	}
 }
