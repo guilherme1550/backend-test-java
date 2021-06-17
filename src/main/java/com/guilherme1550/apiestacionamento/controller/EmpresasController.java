@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,6 @@ import com.guilherme1550.apiestacionamento.model.TelefoneEmpresa;
 import com.guilherme1550.apiestacionamento.model.UsuarioEmpresa;
 import com.guilherme1550.apiestacionamento.repository.EmpresaRepository;
 import com.guilherme1550.apiestacionamento.repository.EnderecoEmpresaRepository;
-import com.guilherme1550.apiestacionamento.repository.PerfilRepository;
 import com.guilherme1550.apiestacionamento.repository.TelefoneEmpresaRepository;
 import com.guilherme1550.apiestacionamento.repository.UsuarioEmpresaRepository;
 import com.guilherme1550.apiestacionamento.service.EmpresaService;
