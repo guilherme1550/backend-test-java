@@ -33,7 +33,7 @@ public class EnderecoEstacionamentoService {
 				throw new VagasParaCarroInsuficienteException(
 						"Este estacionamento não possui vagas para Carros disponíveis.");
 		} else if (tipoVeiculo.equalsIgnoreCase("Moto")) {
-			if (enderecoEstacionamento.getQtdVagasMoto().compareTo(1) < 1)
+			if (enderecoEstacionamento.getQtdVagasMoto().compareTo(1) < 0)
 				throw new VagasParaMotoInsuficienteException(
 						"Este estacionamento não possui vagas para Motos disponíveis.");
 		}
