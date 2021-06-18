@@ -1,5 +1,8 @@
 package com.guilherme1550.apiestacionamento.controller.form;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import com.guilherme1550.apiestacionamento.config.validation.TipoVeiculoException;
 import com.guilherme1550.apiestacionamento.model.Empresa;
 import com.guilherme1550.apiestacionamento.model.EnderecoEstacionamento;
@@ -8,11 +11,28 @@ import com.guilherme1550.apiestacionamento.model.Veiculo;
 
 public class CadastroVeiculoForm {
 
+	@NotNull(message = "O campo não pode ser nulo, favor digitar a marca do Veículo")
+	@NotEmpty(message = "O campo não pode ser vazio, favor digitar a marca do Veículo")
 	private String marca;
+	
+	@NotNull(message = "O campo não pode ser nulo, favor digitar o modelo do Veículo")
+	@NotEmpty(message = "O campo não pode ser vazio, favor digitar o modelo do Veículo")
 	private String modelo;
+	
+	@NotNull(message = "O campo não pode ser nulo, favor digitar a cor do Veículo")
+	@NotEmpty(message = "O campo não pode ser vazio, favor digitar a cor do Veículo")
 	private String cor;
+	
+	@NotNull(message = "O campo não pode ser nulo, favor digitar a placa do Veículo")
+	@NotEmpty(message = "O campo não pode ser vazio, favor digitar a placa do Veículo")
 	private String placa;
+	
+	@NotNull(message = "O campo não pode ser nulo, favor digitar o tipo do Veículo")
+	@NotEmpty(message = "O campo não pode ser vazio, favor digitar o tipo do Veículo")
 	private String tipo;
+	
+	@NotNull(message = "O campo não pode ser nulo, favor fornecer o id do Endereço do Estacionamento")
+	@NotEmpty(message = "O campo não pode ser vazio, favor fornecer o id do Endereço do Estacionamento")
 	private String idEnderecoEstacionamento;
 
 	public String getMarca() {
