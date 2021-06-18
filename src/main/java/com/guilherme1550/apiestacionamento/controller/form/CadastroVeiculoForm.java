@@ -1,5 +1,6 @@
 package com.guilherme1550.apiestacionamento.controller.form;
 
+import com.guilherme1550.apiestacionamento.config.validation.TipoVeiculoException;
 import com.guilherme1550.apiestacionamento.model.Empresa;
 import com.guilherme1550.apiestacionamento.model.EnderecoEstacionamento;
 import com.guilherme1550.apiestacionamento.model.Tipo;
@@ -63,12 +64,12 @@ public class CadastroVeiculoForm {
 	}
 
 	public Veiculo converterVeiculo(Empresa empresa, EnderecoEstacionamento enderecoEstacionamento) {
-		if(this.tipo.equalsIgnoreCase("CARRO"))
+		if(this.tipo.equalsIgnoreCase("CARRO")) {
 			return new Veiculo(this.marca, this.modelo, this.cor, this.placa, Tipo.CARRO, empresa, enderecoEstacionamento);
-		
-		if(this.tipo.equalsIgnoreCase("MOTO"))
+		} else if(this.tipo.equalsIgnoreCase("MOTO")) {
 			return new Veiculo(this.marca, this.modelo, this.cor, this.placa, Tipo.MOTO, empresa, enderecoEstacionamento);
-		
-		return null;
+		} else {
+			throw new TipoVeiculoException("Tipo do Veículo inválido!");
+		}
 	}
 }
