@@ -1,19 +1,16 @@
 package com.guilherme1550.apiestacionamento.controller.form;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.id.UUIDGenerator;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.guilherme1550.apiestacionamento.model.Empresa;
 import com.guilherme1550.apiestacionamento.model.Perfil;
 import com.guilherme1550.apiestacionamento.model.UsuarioEmpresa;
-import com.guilherme1550.apiestacionamento.repository.PerfilRepository;
 import com.guilherme1550.apiestacionamento.service.PerfilService;
 
 public class CadastroUsuarioEmpresaForm {
