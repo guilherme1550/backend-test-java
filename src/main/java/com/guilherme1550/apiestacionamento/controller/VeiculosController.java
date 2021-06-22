@@ -41,7 +41,7 @@ public class VeiculosController {
 			return ResponseEntity.badRequest().body("Endereço do estacionamento não encontrado");
 		
 		enderecoEstacionamentoService.verificarSeEnderecoEstacionamentoPossuiVaga(enderecoEstacionamento, form.getTipo());
-		enderecoEstacionamentoService.estacionarVeiculo(enderecoEstacionamento, form.getTipo());
+		enderecoEstacionamentoService.subtrairVaga(enderecoEstacionamento, form.getTipo());
 		
 		UsuarioEmpresa usuarioEmpresa = (UsuarioEmpresa) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Empresa empresa = usuarioEmpresa.getEmpresa();

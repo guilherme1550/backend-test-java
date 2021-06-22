@@ -16,4 +16,9 @@ public class ErroVeiculoHandler {
 	public ResponseEntity<?> handle(VeiculoJaCadastradoException exception) {
 		return ResponseEntity.badRequest().body(exception.getMessage());
 	}
+	
+	@ExceptionHandler(VeiculoNaoCadastradoException.class)
+	public ResponseEntity<?> handle(VeiculoNaoCadastradoException exception) {
+		return ResponseEntity.badRequest().body(exception.getMessage());
+	}
 }

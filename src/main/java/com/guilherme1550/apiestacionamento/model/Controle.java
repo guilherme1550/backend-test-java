@@ -27,6 +27,13 @@ public class Controle {
 	@ManyToOne
 	private Veiculo veiculo;
 
+	public Controle() {}
+	
+	public Controle(Veiculo veiculo) {
+		this.horaEntrada = LocalDateTime.now();
+		this.veiculo = veiculo;
+	}
+	
 	public String getId() {
 		return id;
 	}

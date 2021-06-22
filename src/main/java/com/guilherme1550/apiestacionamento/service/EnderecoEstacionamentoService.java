@@ -41,7 +41,7 @@ public class EnderecoEstacionamentoService {
 	}
 
 	@Transactional
-	public void estacionarVeiculo(EnderecoEstacionamento enderecoEstacionamento, String tipoVeiculo) {
+	public void subtrairVaga(EnderecoEstacionamento enderecoEstacionamento, String tipoVeiculo) {
 		if (tipoVeiculo.equalsIgnoreCase("Carro")) {
 			int vagasCarro = enderecoEstacionamento.getQtdVagasCarro() - 1;
 			enderecoEstacionamento.setQtdVagasCarro(vagasCarro);
