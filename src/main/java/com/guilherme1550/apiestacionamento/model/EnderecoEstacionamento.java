@@ -42,7 +42,7 @@ public class EnderecoEstacionamento {
 	@Column(name = "qtd_vagas_carro", updatable = true, nullable = false)
 	private Integer qtdVagasCarro;
 
-	@ManyToOne
+	@ManyToOne()
 	private Estacionamento estacionamento;
 
 	public EnderecoEstacionamento() {
@@ -133,9 +133,9 @@ public class EnderecoEstacionamento {
 		this.qtdVagasCarro = qtdVagasCarro;
 	}
 
-	public Estacionamento getEstacionamento() {
-		return estacionamento;
-	}
+//	public Estacionamento getEstacionamento() {
+//		return estacionamento;
+//	}
 
 	public void setEstacionamento(Estacionamento estacionamento) {
 		this.estacionamento = estacionamento;

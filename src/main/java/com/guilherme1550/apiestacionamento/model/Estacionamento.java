@@ -1,9 +1,13 @@
 package com.guilherme1550.apiestacionamento.model;
 
+
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -27,6 +31,12 @@ public class Estacionamento {
 
 	@Column(name = "senha", updatable = true, nullable = false)
 	private String senha;
+	
+	@OneToMany(mappedBy = "estacionamento")
+	private List<EnderecoEstacionamento> enderecoEstacionamento;
+	
+	@OneToMany(mappedBy = "estacionamento")
+	private List<TelefoneEstacionamento> telefoneEstacionamento;
 
 	public Estacionamento() {
 	}
@@ -77,4 +87,21 @@ public class Estacionamento {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
+
+	public List<EnderecoEstacionamento> getEnderecoEstacionamento() {
+		return enderecoEstacionamento;
+	}
+
+	public void setEnderecoEstacionamento(List<EnderecoEstacionamento> enderecoEstacionamento) {
+		this.enderecoEstacionamento = enderecoEstacionamento;
+	}
+
+	public List<TelefoneEstacionamento> getTelefoneEstacionamento() {
+		return telefoneEstacionamento;
+	}
+
+	public void setTelefoneEstacionamento(List<TelefoneEstacionamento> telefoneEstacionamento) {
+		this.telefoneEstacionamento = telefoneEstacionamento;
+	}
+	
 }
