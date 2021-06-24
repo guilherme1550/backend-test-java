@@ -8,12 +8,13 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.guilherme1550.apiestacionamento.controller.dto.ListaEstacionamentosDto;
 import com.guilherme1550.apiestacionamento.controller.form.CadastroEstacionamentoForm;
 import com.guilherme1550.apiestacionamento.model.EnderecoEstacionamento;
 import com.guilherme1550.apiestacionamento.model.Estacionamento;
@@ -61,5 +62,12 @@ public class EstacionamentosController {
 		telefoneEstacionamento.forEach(telefone -> telefoneEstacionamentoRepository.save(telefone));
 
 		return ResponseEntity.ok().build();
+	}
+	
+	@GetMapping
+	public ResponseEntity<?> listarTodosEstacionamentos() {
+		List<Estacionamento> estacionamentos = estacionamentoRepository.findAll();
+		
+		return ResponseEntity.ok(ListaEstacionamentosDto.converter(estacionamentos));
 	}
 }
