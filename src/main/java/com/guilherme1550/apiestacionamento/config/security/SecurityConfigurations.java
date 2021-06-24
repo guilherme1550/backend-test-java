@@ -52,6 +52,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 			.antMatchers(HttpMethod.POST,"/estacionamentos" ).permitAll()
 			.antMatchers(HttpMethod.GET,"/estacionamentos" ).permitAll()
 			.antMatchers(HttpMethod.POST,"/controle/**" ).permitAll()
+			.antMatchers(HttpMethod.GET,"/controle/**" ).permitAll()
 			.antMatchers("/h2-console/**").permitAll()
 			.anyRequest().authenticated()
 			.and().csrf().disable()
