@@ -1,7 +1,5 @@
 package com.guilherme1550.apiestacionamento.controller;
 
-
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.guilherme1550.apiestacionamento.controller.dto.ListaControlePorEnderecoEstacionamentoDto;
 import com.guilherme1550.apiestacionamento.controller.dto.ListaControlePorPlacaVeiculoDto;
 import com.guilherme1550.apiestacionamento.controller.form.EntradaVeiculoForm;
 import com.guilherme1550.apiestacionamento.controller.form.SaidaVeiculoForm;
@@ -31,35 +29,42 @@ public class EntradaSaidaVeiculoController {
 
 	@Autowired
 	VeiculoRepository veiculoRepository;
-	
+
 	@Autowired
 	ControleRepository controleRepository;
-	
+
 	@Autowired
 	EnderecoEstacionamentoRepository enderecoEstacionamentoRepository;
-	
+
 	@Autowired
 	EstacionamentoRepository estacionamentoRepository;
-	
+
 	@Autowired
 	ControleService controleService;
-	
+
 	@PostMapping("/entrada")
 	public ResponseEntity<?> cadastrarEntradaVeiculo(@RequestBody @Valid EntradaVeiculoForm form) {
 		Controle controle = form.converter(veiculoRepository);
 		controleRepository.save(controle);
 		return ResponseEntity.ok().build();
 	}
-	 
+
 	@PostMapping("/saida")
 	public ResponseEntity<?> cadastrarSaidaVeiculo(@RequestBody @Valid SaidaVeiculoForm form) {
 		Controle controle = form.converter(controleRepository, controleService);
 		controleRepository.save(controle);
 		return ResponseEntity.ok().build();
 	}
-	
-	@GetMapping("/{idPlacaVeiculo}")
+
+	@GetMapping("/veiculo/{idPlacaVeiculo}")
 	public ResponseEntity<?> listarPorPlacaVeiculo(@PathVariable String idPlacaVeiculo) {
-		return ResponseEntity.ok(ListaControlePorPlacaVeiculoDto.converter(enderecoEstacionamentoRepository , estacionamentoRepository, veiculoRepository, controleRepository, idPlacaVeiculo));
+		return ResponseEntity.ok(ListaControlePorPlacaVeiculoDto.converter(enderecoEstacionamentoRepository,
+				estacionamentoRepository, veiculoRepository, controleRepository, idPlacaVeiculo));
+	}
+
+	@GetMapping("/endereco-estacionamento/{idEnderecoEstacionamento}")
+	public ResponseEntity<?> listarPorEnderecoEstacionamento(@PathVariable String idEnderecoEstacionamento) {
+		return ResponseEntity.ok(ListaControlePorEnderecoEstacionamentoDto.converter(estacionamentoRepository,
+				enderecoEstacionamentoRepository, controleRepository, veiculoRepository, idEnderecoEstacionamento));
 	}
 }
