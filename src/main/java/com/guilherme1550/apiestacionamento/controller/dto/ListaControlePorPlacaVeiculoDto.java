@@ -21,9 +21,6 @@ public class ListaControlePorPlacaVeiculoDto {
 	ControleVeiculoDto veiculo;
 	ControleEstacionamentoDto estacionamento;
 
-	// Veiculo veiculo;
-	// String nomeEstacionamento;
-
 	public ListaControlePorPlacaVeiculoDto(Controle controle, ControleVeiculoDto veiculo,
 			ControleEstacionamentoDto estacionamento) {
 		this.idControle = controle.getId();
