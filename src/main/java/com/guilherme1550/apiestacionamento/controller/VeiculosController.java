@@ -1,10 +1,13 @@
 package com.guilherme1550.apiestacionamento.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +19,10 @@ import com.guilherme1550.apiestacionamento.model.EnderecoEstacionamento;
 import com.guilherme1550.apiestacionamento.model.UsuarioEmpresa;
 import com.guilherme1550.apiestacionamento.model.Veiculo;
 import com.guilherme1550.apiestacionamento.repository.VeiculoRepository;
+import com.guilherme1550.apiestacionamento.service.AutenticacaoUsuarioEmpresaService;
 import com.guilherme1550.apiestacionamento.service.EnderecoEstacionamentoService;
 import com.guilherme1550.apiestacionamento.service.VeiculoService;
+
 
 @RestController
 @RequestMapping("veiculos")
@@ -31,6 +36,9 @@ public class VeiculosController {
 	
 	@Autowired
 	VeiculoService veiculoService;
+	
+	@Autowired
+	AutenticacaoUsuarioEmpresaService autenticacaoUsuarioEmpresaService;
 	
 	@PostMapping
 	public ResponseEntity<?> cadastrar(@RequestBody @Valid CadastroVeiculoForm form) {
@@ -50,5 +58,15 @@ public class VeiculosController {
 		veiculoRepository.save(veiculo);
 		
 		return ResponseEntity.ok().build();
+	}
+	
+	@GetMapping("/empresa")
+	public ResponseEntity<?> listarPorEmpresa() {
+		Empresa empresa = autenticacaoUsuarioEmpresaService.getEmpresa();
+		List<Veiculo> veiculos = veiculoRepository.findByEmpresaId(empresa.getId());
+		if (veiculos.size() == 0)
+			return ResponseEntity.notFound().build();
+		
+		return ResponseEntity.ok(veiculos);
 	}
 }
