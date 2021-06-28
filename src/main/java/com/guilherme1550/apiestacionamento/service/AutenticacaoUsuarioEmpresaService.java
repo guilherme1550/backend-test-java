@@ -3,11 +3,13 @@ package com.guilherme1550.apiestacionamento.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.guilherme1550.apiestacionamento.model.Empresa;
 import com.guilherme1550.apiestacionamento.model.UsuarioEmpresa;
 import com.guilherme1550.apiestacionamento.repository.UsuarioEmpresaRepository;
 
@@ -24,6 +26,17 @@ public class AutenticacaoUsuarioEmpresaService implements UserDetailsService {
 			return usuarioEmpresa.get();
 		
 		throw new UsernameNotFoundException("Usuário ou senha inválido!");
+	}
+	
+	public UsuarioEmpresa getUsuarioEmpresaLogado() {
+		return (UsuarioEmpresa) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	}
+	
+	public Empresa getEmpresa() {
+		UsuarioEmpresa usuarioEmpresa = this.getUsuarioEmpresaLogado();
+		return usuarioEmpresa.getEmpresa();
+		//return this.getUsuarioEmpresaLogado().getEmpresa()
+		
 	}
 
 }

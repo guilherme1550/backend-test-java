@@ -10,4 +10,5 @@ import com.guilherme1550.apiestacionamento.model.Veiculo;
 public interface VeiculoRepository extends JpaRepository<Veiculo, String>{
 	Optional<Veiculo> findByPlaca(String placa);
 	List<Veiculo> findByEnderecoEstacionamentoId(String placa);
+	List<Veiculo> findByEmpresaId(String idEmpresa);
 }
