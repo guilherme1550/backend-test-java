@@ -70,11 +70,10 @@ public class VeiculoService {
 		return veiculoSalvo;
 	}
 
-	public ResponseEntity<?> verificarSeVeiculoExiste(String placa) {
+	public void verificarSeVeiculoExiste(String placa) {
 		Optional<Veiculo> veiculo = veiculoRepository.findByPlaca(placa);
 		if (veiculo.isPresent())
 			throw new VeiculoJaCadastradoException("Veículo já cadastrado no sistema.");
 
-		return null;
 	}
 }
