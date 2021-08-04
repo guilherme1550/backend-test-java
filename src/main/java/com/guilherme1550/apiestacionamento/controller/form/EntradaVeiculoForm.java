@@ -5,10 +5,10 @@ import java.util.Optional;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import com.guilherme1550.apiestacionamento.config.validation.VeiculoNaoCadastradoException;
 import com.guilherme1550.apiestacionamento.model.Controle;
 import com.guilherme1550.apiestacionamento.model.Veiculo;
 import com.guilherme1550.apiestacionamento.repository.VeiculoRepository;
+import com.guilherme1550.apiestacionamento.service.validation.VeiculoNaoCadastradoException;
 
 public class EntradaVeiculoForm {
 	

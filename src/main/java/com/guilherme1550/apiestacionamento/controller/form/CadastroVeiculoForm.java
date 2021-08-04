@@ -3,11 +3,11 @@ package com.guilherme1550.apiestacionamento.controller.form;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import com.guilherme1550.apiestacionamento.config.validation.TipoVeiculoException;
 import com.guilherme1550.apiestacionamento.model.Empresa;
 import com.guilherme1550.apiestacionamento.model.EnderecoEstacionamento;
 import com.guilherme1550.apiestacionamento.model.Tipo;
 import com.guilherme1550.apiestacionamento.model.Veiculo;
+import com.guilherme1550.apiestacionamento.service.validation.TipoVeiculoException;
 
 public class CadastroVeiculoForm {
 

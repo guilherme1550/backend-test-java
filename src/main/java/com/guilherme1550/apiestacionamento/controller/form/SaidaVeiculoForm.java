@@ -6,10 +6,10 @@ import java.util.Optional;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import com.guilherme1550.apiestacionamento.config.validation.ControleNaoEncontradoException;
 import com.guilherme1550.apiestacionamento.model.Controle;
 import com.guilherme1550.apiestacionamento.repository.ControleRepository;
 import com.guilherme1550.apiestacionamento.service.ControleService;
+import com.guilherme1550.apiestacionamento.service.validation.ControleNaoEncontradoException;
 
 public class SaidaVeiculoForm {
 	
