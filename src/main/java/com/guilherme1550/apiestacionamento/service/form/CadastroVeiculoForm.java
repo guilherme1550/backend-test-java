@@ -1,4 +1,4 @@
-package com.guilherme1550.apiestacionamento.controller.form;
+package com.guilherme1550.apiestacionamento.service.form;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

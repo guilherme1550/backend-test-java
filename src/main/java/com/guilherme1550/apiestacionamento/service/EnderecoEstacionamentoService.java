@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.guilherme1550.apiestacionamento.model.EnderecoEstacionamento;
 import com.guilherme1550.apiestacionamento.model.Tipo;
 import com.guilherme1550.apiestacionamento.repository.EnderecoEstacionamentoRepository;
+import com.guilherme1550.apiestacionamento.service.validation.EnderecoEstacionamentoNaoCadastradoException;
 import com.guilherme1550.apiestacionamento.service.validation.VagasParaCarroInsuficienteException;
 import com.guilherme1550.apiestacionamento.service.validation.VagasParaMotoInsuficienteException;
 
@@ -21,10 +22,12 @@ public class EnderecoEstacionamentoService {
 
 	public EnderecoEstacionamento verificarSeEnderecoEstacionamentoExiste(String id) {
 		Optional<EnderecoEstacionamento> enderecoEstacionamento = enderecoEstacionamentoRepository.findById(id);
-		if (enderecoEstacionamento.isPresent())
-			return enderecoEstacionamento.get();
+		if (!enderecoEstacionamento.isPresent()) {
+			throw new EnderecoEstacionamentoNaoCadastradoException(
+					"Endereço do estacionamento não cadastrado no sistema!");
+		}
 
-		return null;
+		return enderecoEstacionamento.get();
 	}
 
 	public void verificarSeEnderecoEstacionamentoPossuiVaga(EnderecoEstacionamento enderecoEstacionamento,
@@ -41,7 +44,6 @@ public class EnderecoEstacionamentoService {
 
 	}
 
-	
 	@Transactional
 	public void addVaga(EnderecoEstacionamento enderecoEstacionamento, Tipo tipoVeiculo) {
 		if (tipoVeiculo == Tipo.CARRO) {
@@ -54,7 +56,7 @@ public class EnderecoEstacionamentoService {
 			enderecoEstacionamentoRepository.save(enderecoEstacionamento);
 		}
 	}
-	
+
 	@Transactional
 	public void subtrairVaga(EnderecoEstacionamento enderecoEstacionamento, Tipo tipoVeiculo) {
 		if (tipoVeiculo == Tipo.CARRO) {
@@ -67,6 +69,5 @@ public class EnderecoEstacionamentoService {
 			enderecoEstacionamentoRepository.save(enderecoEstacionamento);
 		}
 	}
-	
-	
+
 }
