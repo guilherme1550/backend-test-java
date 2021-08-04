@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.guilherme1550.apiestacionamento.model.Empresa;
 import com.guilherme1550.apiestacionamento.model.Veiculo;
 import com.guilherme1550.apiestacionamento.repository.VeiculoRepository;
 import com.guilherme1550.apiestacionamento.service.AutenticacaoUsuarioEmpresaService;
@@ -51,11 +50,7 @@ public class VeiculosController {
 	
 	@GetMapping("/empresa")
 	public ResponseEntity<?> listarPorEmpresa() {
-		Empresa empresa = autenticacaoUsuarioEmpresaService.getEmpresa();
-		List<Veiculo> veiculos = veiculoRepository.findByEmpresaId(empresa.getId());
-		if (veiculos.size() == 0)
-			return ResponseEntity.notFound().build();
-	
+		List<Veiculo> veiculos = veiculoService.listarPorEmpresa();
 		return ResponseEntity.ok(veiculos);
 	}
 	
