@@ -1,15 +1,13 @@
 package com.guilherme1550.apiestacionamento.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.guilherme1550.apiestacionamento.model.Empresa;
 import com.guilherme1550.apiestacionamento.model.EnderecoEstacionamento;
-import com.guilherme1550.apiestacionamento.model.UsuarioEmpresa;
 import com.guilherme1550.apiestacionamento.model.Veiculo;
 import com.guilherme1550.apiestacionamento.repository.VeiculoRepository;
 import com.guilherme1550.apiestacionamento.service.form.AtualizarVeiculoDeEstacionamentoForm;
@@ -26,6 +24,9 @@ public class VeiculoService {
 
 	@Autowired
 	EnderecoEstacionamentoService enderecoEstacionamentoService;
+	
+	@Autowired
+	AutenticacaoUsuarioEmpresaService autenticacaoUsuarioEmpresaService;
 
 	public Veiculo cadastrar(CadastroVeiculoForm form) {
 		this.verificarSeVeiculoExiste(form.getPlaca());
@@ -33,9 +34,7 @@ public class VeiculoService {
 		EnderecoEstacionamento enderecoEstacionamento = enderecoEstacionamentoService
 				.verificarSeEnderecoEstacionamentoExiste(form.getIdEnderecoEstacionamento());
 
-		UsuarioEmpresa usuarioEmpresa = (UsuarioEmpresa) SecurityContextHolder.getContext().getAuthentication()
-				.getPrincipal();
-		Empresa empresa = usuarioEmpresa.getEmpresa();
+		Empresa empresa = autenticacaoUsuarioEmpresaService.getEmpresa();
 
 		Veiculo veiculo = form.converterVeiculo(empresa, enderecoEstacionamento);
 		enderecoEstacionamentoService.verificarSeEnderecoEstacionamentoPossuiVaga(enderecoEstacionamento,
@@ -46,6 +45,15 @@ public class VeiculoService {
 		return veiculoSalvo;
 	}
 
+	public List<Veiculo> listarPorEmpresa() {
+		Empresa empresa = autenticacaoUsuarioEmpresaService.getEmpresa();
+		List<Veiculo> veiculos = veiculoRepository.findByEmpresaId(empresa.getId());
+		if (veiculos.size() == 0)
+			throw new VeiculoNaoCadastradoException("Nenhum veículo encontrado");
+	
+		return veiculos;
+	}
+	
 	public Veiculo atualizarEstacionamento(AtualizarVeiculoDeEstacionamentoForm form) {
 		Optional<Veiculo> veiculo = veiculoRepository.findById(form.getIdVeiculo());
 		if (!veiculo.isPresent()) {
