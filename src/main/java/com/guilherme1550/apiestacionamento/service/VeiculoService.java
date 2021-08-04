@@ -77,6 +77,14 @@ public class VeiculoService {
 
 		return veiculoSalvo;
 	}
+	
+	public void remover(String id) {
+		Optional<Veiculo> veiculo = veiculoRepository.findById(id);
+		if(!veiculo.isPresent()) {
+			throw new VeiculoNaoCadastradoException("Veículo não encontrado no sistema!");
+		}
+		veiculoRepository.deleteById(id);
+	}
 
 	public void verificarSeVeiculoExiste(String placa) {
 		Optional<Veiculo> veiculo = veiculoRepository.findByPlaca(placa);

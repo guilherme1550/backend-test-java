@@ -1,7 +1,6 @@
 package com.guilherme1550.apiestacionamento.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -64,11 +63,7 @@ public class VeiculosController {
 	@DeleteMapping("/{id}")
 	@Transactional
 	public ResponseEntity<?> remover(@PathVariable String id) {
-		Optional<Veiculo> veiculo = veiculoRepository.findById(id);
-		if(veiculo.isPresent()) {
-			veiculoRepository.deleteById(id);
-			return ResponseEntity.ok().build();
-		}
-		return ResponseEntity.notFound().build();
+		veiculoService.remover(id);
+		return ResponseEntity.ok("Veículo excluído com sucesso!");
 	}
 }
