@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.guilherme1550.apiestacionamento.config.validation.VeiculoNaoCadastradoException;
 import com.guilherme1550.apiestacionamento.model.Controle;
 import com.guilherme1550.apiestacionamento.model.Estacionamento;
 import com.guilherme1550.apiestacionamento.model.Veiculo;
@@ -13,6 +12,7 @@ import com.guilherme1550.apiestacionamento.repository.ControleRepository;
 import com.guilherme1550.apiestacionamento.repository.EnderecoEstacionamentoRepository;
 import com.guilherme1550.apiestacionamento.repository.EstacionamentoRepository;
 import com.guilherme1550.apiestacionamento.repository.VeiculoRepository;
+import com.guilherme1550.apiestacionamento.service.validation.VeiculoNaoCadastradoException;
 
 public class ListaControlePorPlacaVeiculoDto {
 	String idControle;

@@ -1,4 +1,4 @@
-package com.guilherme1550.apiestacionamento.config.validation;
+package com.guilherme1550.apiestacionamento.service.validation;
 
 import java.util.ArrayList;
 import java.util.List;

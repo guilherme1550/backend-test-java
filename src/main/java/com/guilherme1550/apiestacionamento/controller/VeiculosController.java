@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,7 @@ import com.guilherme1550.apiestacionamento.repository.VeiculoRepository;
 import com.guilherme1550.apiestacionamento.service.AutenticacaoUsuarioEmpresaService;
 import com.guilherme1550.apiestacionamento.service.EnderecoEstacionamentoService;
 import com.guilherme1550.apiestacionamento.service.VeiculoService;
+import com.guilherme1550.apiestacionamento.service.form.AtualizarVeiculoDeEstacionamentoForm;
 
 
 @RestController
@@ -52,13 +54,13 @@ public class VeiculosController {
 		if (enderecoEstacionamento == null)
 			return ResponseEntity.badRequest().body("Endereço do estacionamento não encontrado");
 		
-		enderecoEstacionamentoService.verificarSeEnderecoEstacionamentoPossuiVaga(enderecoEstacionamento, form.getTipo());
-		enderecoEstacionamentoService.subtrairVaga(enderecoEstacionamento, form.getTipo());
-		
 		UsuarioEmpresa usuarioEmpresa = (UsuarioEmpresa) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Empresa empresa = usuarioEmpresa.getEmpresa();
 		
 		Veiculo veiculo = form.converterVeiculo(empresa, enderecoEstacionamento);
+		enderecoEstacionamentoService.verificarSeEnderecoEstacionamentoPossuiVaga(enderecoEstacionamento, veiculo.getTipo());
+		enderecoEstacionamentoService.subtrairVaga(enderecoEstacionamento, veiculo.getTipo());
+		
 		veiculoRepository.save(veiculo);
 		
 		return ResponseEntity.ok().build();
@@ -70,8 +72,15 @@ public class VeiculosController {
 		List<Veiculo> veiculos = veiculoRepository.findByEmpresaId(empresa.getId());
 		if (veiculos.size() == 0)
 			return ResponseEntity.notFound().build();
-		
+	
 		return ResponseEntity.ok(veiculos);
+	}
+	
+	@PatchMapping("/atualizar-estacionamento")
+	@Transactional
+	public ResponseEntity<?> atualizarEstacionamento(@RequestBody @Valid AtualizarVeiculoDeEstacionamentoForm form) {
+		Veiculo veiculo = veiculoService.atualizarEstacionamento(form);
+		return ResponseEntity.ok(veiculo);
 	}
 	
 	@DeleteMapping("/{id}")
