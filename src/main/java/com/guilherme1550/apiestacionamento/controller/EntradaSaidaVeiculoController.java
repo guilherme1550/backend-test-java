@@ -1,5 +1,7 @@
 package com.guilherme1550.apiestacionamento.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,60 +13,47 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.guilherme1550.apiestacionamento.controller.dto.ListaControlePorEnderecoEstacionamentoDto;
-import com.guilherme1550.apiestacionamento.controller.dto.ListaControlePorPlacaVeiculoDto;
-import com.guilherme1550.apiestacionamento.controller.form.EntradaVeiculoForm;
-import com.guilherme1550.apiestacionamento.controller.form.SaidaVeiculoForm;
+import com.guilherme1550.apiestacionamento.controller.dto.ControleDto;
+import com.guilherme1550.apiestacionamento.controller.dto.ListaControleDto;
 import com.guilherme1550.apiestacionamento.model.Controle;
 
-import com.guilherme1550.apiestacionamento.repository.ControleRepository;
-import com.guilherme1550.apiestacionamento.repository.EnderecoEstacionamentoRepository;
-import com.guilherme1550.apiestacionamento.repository.EstacionamentoRepository;
-import com.guilherme1550.apiestacionamento.repository.VeiculoRepository;
 import com.guilherme1550.apiestacionamento.service.ControleService;
+import com.guilherme1550.apiestacionamento.service.EnderecoEstacionamentoService;
+import com.guilherme1550.apiestacionamento.service.form.EntradaVeiculoForm;
+import com.guilherme1550.apiestacionamento.service.form.SaidaVeiculoForm;
 
 @RestController
 @RequestMapping("/controle")
 public class EntradaSaidaVeiculoController {
 
 	@Autowired
-	VeiculoRepository veiculoRepository;
+	private EnderecoEstacionamentoService enderecoEstacionamentoService;
 
 	@Autowired
-	ControleRepository controleRepository;
-
-	@Autowired
-	EnderecoEstacionamentoRepository enderecoEstacionamentoRepository;
-
-	@Autowired
-	EstacionamentoRepository estacionamentoRepository;
-
-	@Autowired
-	ControleService controleService;
+	private ControleService controleService;
 
 	@PostMapping("/entrada")
 	public ResponseEntity<?> cadastrarEntradaVeiculo(@RequestBody @Valid EntradaVeiculoForm form) {
-		Controle controle = form.converter(veiculoRepository);
-		controleRepository.save(controle);
-		return ResponseEntity.ok().build();
+		Controle controle = controleService.entradaVeiculo(form);
+		return ResponseEntity.ok(ControleDto.converter(enderecoEstacionamentoService, controle));
 	}
 
 	@PostMapping("/saida")
 	public ResponseEntity<?> cadastrarSaidaVeiculo(@RequestBody @Valid SaidaVeiculoForm form) {
-		Controle controle = form.converter(controleRepository, controleService);
-		controleRepository.save(controle);
-		return ResponseEntity.ok().build();
+		Controle controle = controleService.saidaVeiculo(form);
+		return ResponseEntity.ok(ControleDto.converter(enderecoEstacionamentoService, controle));
 	}
 
 	@GetMapping("/veiculo/{idPlacaVeiculo}")
 	public ResponseEntity<?> listarPorPlacaVeiculo(@PathVariable String idPlacaVeiculo) {
-		return ResponseEntity.ok(ListaControlePorPlacaVeiculoDto.converter(enderecoEstacionamentoRepository,
-				estacionamentoRepository, veiculoRepository, controleRepository, idPlacaVeiculo));
+		List<Controle> controles = controleService.listarPorPlacaVeiculo(idPlacaVeiculo);
+		return ResponseEntity.ok(ListaControleDto.converter(enderecoEstacionamentoService, controles));
 	}
 
 	@GetMapping("/endereco-estacionamento/{idEnderecoEstacionamento}")
 	public ResponseEntity<?> listarPorEnderecoEstacionamento(@PathVariable String idEnderecoEstacionamento) {
-		return ResponseEntity.ok(ListaControlePorEnderecoEstacionamentoDto.converter(estacionamentoRepository,
-				enderecoEstacionamentoRepository, controleRepository, veiculoRepository, idEnderecoEstacionamento));
+		List<Controle> controles = controleService.listarPorEnderecoEstacionamento(idEnderecoEstacionamento);
+		return ResponseEntity
+				.ok(ListaControleDto.converter(enderecoEstacionamentoService, controles));
 	}
 }

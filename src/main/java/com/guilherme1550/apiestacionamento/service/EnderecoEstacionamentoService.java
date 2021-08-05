@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.guilherme1550.apiestacionamento.model.EnderecoEstacionamento;
 import com.guilherme1550.apiestacionamento.model.Tipo;
 import com.guilherme1550.apiestacionamento.repository.EnderecoEstacionamentoRepository;
+import com.guilherme1550.apiestacionamento.repository.EstacionamentoRepository;
 import com.guilherme1550.apiestacionamento.service.validation.EnderecoEstacionamentoNaoCadastradoException;
 import com.guilherme1550.apiestacionamento.service.validation.VagasParaCarroInsuficienteException;
 import com.guilherme1550.apiestacionamento.service.validation.VagasParaMotoInsuficienteException;
@@ -18,7 +19,10 @@ import com.guilherme1550.apiestacionamento.service.validation.VagasParaMotoInsuf
 public class EnderecoEstacionamentoService {
 
 	@Autowired
-	EnderecoEstacionamentoRepository enderecoEstacionamentoRepository;
+	private EnderecoEstacionamentoRepository enderecoEstacionamentoRepository;
+	
+	@Autowired
+	private EstacionamentoRepository estacionamentoRepository;
 
 	public EnderecoEstacionamento verificarSeEnderecoEstacionamentoExiste(String id) {
 		Optional<EnderecoEstacionamento> enderecoEstacionamento = enderecoEstacionamentoRepository.findById(id);
@@ -68,6 +72,12 @@ public class EnderecoEstacionamentoService {
 			enderecoEstacionamento.setQtdVagasMoto(vagasMoto);
 			enderecoEstacionamentoRepository.save(enderecoEstacionamento);
 		}
+	}
+	
+	public String getNomeEstacionamento(String idEnderecoEstacionamento) {
+		String idEstacionamento = enderecoEstacionamentoRepository.getIdEstacionamento(idEnderecoEstacionamento);
+		String nomeEstacionamento = estacionamentoRepository.findById(idEstacionamento).get().getNome();
+		return nomeEstacionamento;
 	}
 
 }

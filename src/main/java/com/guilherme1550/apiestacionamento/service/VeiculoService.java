@@ -20,13 +20,13 @@ import com.guilherme1550.apiestacionamento.service.validation.VeiculoNaoCadastra
 public class VeiculoService {
 
 	@Autowired
-	VeiculoRepository veiculoRepository;
+	private VeiculoRepository veiculoRepository;
 
 	@Autowired
-	EnderecoEstacionamentoService enderecoEstacionamentoService;
+	private EnderecoEstacionamentoService enderecoEstacionamentoService;
 	
 	@Autowired
-	AutenticacaoUsuarioEmpresaService autenticacaoUsuarioEmpresaService;
+	private AutenticacaoUsuarioEmpresaService autenticacaoUsuarioEmpresaService;
 
 	public Veiculo cadastrar(CadastroVeiculoForm form) {
 		this.verificarSeVeiculoExiste(form.getPlaca());
@@ -90,6 +90,21 @@ public class VeiculoService {
 		Optional<Veiculo> veiculo = veiculoRepository.findByPlaca(placa);
 		if (veiculo.isPresent())
 			throw new VeiculoJaCadastradoException("Veículo já cadastrado no sistema.");
-
+	}
+	
+	public Veiculo verificarCadastroVeiculoPorId(String idVeiculo) {
+		Optional<Veiculo> veiculo = veiculoRepository.findById(idVeiculo);
+		if(veiculo.isEmpty()) {
+			throw new VeiculoNaoCadastradoException("Veículo não cadastrado no sistema");
+		}
+		return veiculo.get();
+	}
+	
+	public Veiculo verificarCadastroVeiculoPorPlaca(String placa) {
+		Optional<Veiculo> veiculo = veiculoRepository.findByPlaca(placa);
+		if(veiculo.isEmpty()) {
+			throw new VeiculoNaoCadastradoException("Veículo não cadastrado no sistema");
+		}
+		return veiculo.get();
 	}
 }
