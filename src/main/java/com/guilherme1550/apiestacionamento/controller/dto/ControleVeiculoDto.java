@@ -5,13 +5,13 @@ import com.guilherme1550.apiestacionamento.model.Tipo;
 import com.guilherme1550.apiestacionamento.model.Veiculo;
 
 public class ControleVeiculoDto {
-	String id;
-	String marca;
-	String modelo;
-	String cor;
-	String placa;
-	Tipo tipo;
-	Empresa empresa;
+	private String id;
+	private String marca;
+	private String modelo;
+	private String cor;
+	private String placa;
+	private Tipo tipo;
+	private Empresa empresa;
 	
 	public ControleVeiculoDto(Veiculo veiculo) {
 		this.id = veiculo.getId();

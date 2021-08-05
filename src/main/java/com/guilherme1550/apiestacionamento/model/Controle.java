@@ -30,12 +30,16 @@ public class Controle {
 	@ManyToOne
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Veiculo veiculo;
+	
+	@ManyToOne
+	private EnderecoEstacionamento enderecoEstacionamento;
 
 	public Controle() {}
 	
 	public Controle(Veiculo veiculo) {
 		this.horaEntrada = LocalDateTime.now();
 		this.veiculo = veiculo;
+		this.enderecoEstacionamento = veiculo.getEnderecoEstacionamento();
 	}
 	
 	public String getId() {
@@ -68,6 +72,14 @@ public class Controle {
 
 	public void setVeiculo(Veiculo veiculo) {
 		this.veiculo = veiculo;
+	}
+
+	public EnderecoEstacionamento getEnderecoEstacionamento() {
+		return enderecoEstacionamento;
+	}
+
+	public void setEnderecoEstacionamento(EnderecoEstacionamento enderecoEstacionamento) {
+		this.enderecoEstacionamento = enderecoEstacionamento;
 	}
 	
 }

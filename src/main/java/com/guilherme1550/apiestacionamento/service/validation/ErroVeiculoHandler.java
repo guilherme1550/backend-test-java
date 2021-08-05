@@ -26,4 +26,10 @@ public class ErroVeiculoHandler {
 	public ResponseEntity<?> handle(VeiculoJaCadastradoNoEstacionamentoException exception) {
 		return ResponseEntity.badRequest().body(exception.getMessage());
 	}
+	
+	@ExceptionHandler(VeiculoNaoCadastradoEnderecoEstacionamentoException.class)
+	public ResponseEntity<?> handle(VeiculoNaoCadastradoEnderecoEstacionamentoException exception) {
+		return ResponseEntity.badRequest().body(exception.getMessage());
+	}
+	
 }
