@@ -21,7 +21,7 @@ import com.guilherme1550.apiestacionamento.repository.VeiculoRepository;
 import com.guilherme1550.apiestacionamento.service.AutenticacaoUsuarioEmpresaService;
 import com.guilherme1550.apiestacionamento.service.EnderecoEstacionamentoService;
 import com.guilherme1550.apiestacionamento.service.VeiculoService;
-import com.guilherme1550.apiestacionamento.service.form.AtualizarVeiculoDeEstacionamentoForm;
+import com.guilherme1550.apiestacionamento.service.form.AtualizaVeiculoDeEstacionamentoForm;
 import com.guilherme1550.apiestacionamento.service.form.CadastroVeiculoForm;
 
 
@@ -55,7 +55,7 @@ public class VeiculosController {
 	
 	@PatchMapping("/atualizar-estacionamento")
 	@Transactional
-	public ResponseEntity<?> atualizarEstacionamento(@RequestBody @Valid AtualizarVeiculoDeEstacionamentoForm form) {
+	public ResponseEntity<?> atualizarEstacionamento(@RequestBody @Valid AtualizaVeiculoDeEstacionamentoForm form) {
 		Veiculo veiculo = veiculoService.atualizarEstacionamento(form);
 		return ResponseEntity.ok(veiculo);
 	}

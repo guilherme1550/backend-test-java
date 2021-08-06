@@ -10,7 +10,7 @@ import com.guilherme1550.apiestacionamento.model.Empresa;
 import com.guilherme1550.apiestacionamento.model.EnderecoEstacionamento;
 import com.guilherme1550.apiestacionamento.model.Veiculo;
 import com.guilherme1550.apiestacionamento.repository.VeiculoRepository;
-import com.guilherme1550.apiestacionamento.service.form.AtualizarVeiculoDeEstacionamentoForm;
+import com.guilherme1550.apiestacionamento.service.form.AtualizaVeiculoDeEstacionamentoForm;
 import com.guilherme1550.apiestacionamento.service.form.CadastroVeiculoForm;
 import com.guilherme1550.apiestacionamento.service.validation.VeiculoJaCadastradoException;
 import com.guilherme1550.apiestacionamento.service.validation.VeiculoJaCadastradoNoEstacionamentoException;
@@ -54,7 +54,7 @@ public class VeiculoService {
 		return veiculos;
 	}
 	
-	public Veiculo atualizarEstacionamento(AtualizarVeiculoDeEstacionamentoForm form) {
+	public Veiculo atualizarEstacionamento(AtualizaVeiculoDeEstacionamentoForm form) {
 		Optional<Veiculo> veiculo = veiculoRepository.findById(form.getIdVeiculo());
 		if (!veiculo.isPresent()) {
 			throw new VeiculoNaoCadastradoException("Veiculo não cadastrado no sistema");

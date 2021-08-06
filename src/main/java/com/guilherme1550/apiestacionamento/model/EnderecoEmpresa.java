@@ -4,6 +4,7 @@ package com.guilherme1550.apiestacionamento.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -37,7 +38,7 @@ public class EnderecoEmpresa {
 	@Column(name = "complemento", updatable = true, nullable = false)
 	private String complemento;
 	
-	@ManyToOne
+	@ManyToOne()
 	private Empresa empresa;
 
 	public EnderecoEmpresa() {}
