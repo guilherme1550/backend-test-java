@@ -1,83 +1,71 @@
 package com.guilherme1550.apiestacionamento.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
-import com.guilherme1550.apiestacionamento.controller.form.CadastroEmpresaForm;
+import com.guilherme1550.apiestacionamento.controller.dto.EmpresaDto;
 import com.guilherme1550.apiestacionamento.model.Empresa;
-import com.guilherme1550.apiestacionamento.model.EnderecoEmpresa;
-import com.guilherme1550.apiestacionamento.model.TelefoneEmpresa;
-import com.guilherme1550.apiestacionamento.model.UsuarioEmpresa;
 import com.guilherme1550.apiestacionamento.repository.EmpresaRepository;
-import com.guilherme1550.apiestacionamento.repository.EnderecoEmpresaRepository;
-import com.guilherme1550.apiestacionamento.repository.TelefoneEmpresaRepository;
-import com.guilherme1550.apiestacionamento.repository.UsuarioEmpresaRepository;
 import com.guilherme1550.apiestacionamento.service.EmpresaService;
-import com.guilherme1550.apiestacionamento.service.PerfilService;
-import com.guilherme1550.apiestacionamento.service.UsuarioService;
+import com.guilherme1550.apiestacionamento.service.form.AtualizaEmpresaForm;
+import com.guilherme1550.apiestacionamento.service.form.CadastroEmpresaForm;
 
 @RestController
 @RequestMapping("/empresas")
 public class EmpresasController {
 
 	@Autowired
-	private EmpresaRepository empresaRepository;
-
-	@Autowired
-	private EnderecoEmpresaRepository enderecoEmpresaRepository;
-	
-	@Autowired
-	private TelefoneEmpresaRepository telefoneEmpresaRepository;
-	
-	@Autowired
-	private UsuarioEmpresaRepository usuarioRepository;
-	
-	@Autowired
 	private EmpresaService empresaService;
 	
 	@Autowired
-	private UsuarioService usuarioService;
-	
-	@Autowired
-	private PerfilService perfilService;
+	private EmpresaRepository empresaRepository;
 
 	@PostMapping
-	@Transactional
-	public ResponseEntity<?> cadastrar(@RequestBody @Valid CadastroEmpresaForm form) {
-		
-		String mensagem = empresaService.verificarSeCnpjExiste(form.getCnpj());
-		if (mensagem != null) 
-			return ResponseEntity.badRequest().body(mensagem);
-		
-		mensagem = usuarioService.verificarSeEmailExiste(form.getUsuario().getEmail());
-		if (mensagem != null)
-			return ResponseEntity.badRequest().body(mensagem);
-		
-		
-		Empresa empresa = form.converterEmpresa();
-		Empresa empresaCadastrada = empresaRepository.save(empresa);
+	public RedirectView cadastrar(@RequestBody @Valid CadastroEmpresaForm form) {
+		Empresa empresa = empresaService.cadastrar(form);
 
-		List<EnderecoEmpresa> enderecoEmpresa = form.getEndereco().stream()
-				.map(endereco -> endereco.converterEnderecoEmpresa(empresaCadastrada)).collect(Collectors.toList());
-		enderecoEmpresa.forEach(endereco -> enderecoEmpresaRepository.save(endereco));
+//		return ResponseEntity.created(URI.create("/empresas/" + empresa.getId())).build();
+//		return ResponseEntity.status(HttpStatus.CREATED).location(URI.create("http://localhost:8080/empresas/" + empresa.getId())).build();
+//		return new RedirectView().setUrl("http://localhost:8080/empresas/" + empresa.getId());
+//		return ResponseEntity.
 		
-		List<TelefoneEmpresa> telefoneEmpresa = form.getTelefone().stream()
-				.map(telefone -> telefone.converterTelefoneEmpresa(empresaCadastrada)).collect(Collectors.toList());
-		telefoneEmpresa.forEach(telefone -> telefoneEmpresaRepository.save(telefone));
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http://localhost:8080/empresas/" + empresa.getId());
+		return redirectView;
+	}
+
+	@PutMapping("/{idEmpresa}")
+	public ResponseEntity<?> atualizar(@RequestBody @Valid AtualizaEmpresaForm form, @PathVariable String idEmpresa) {
+		Empresa empresa = empresaService.atualizar(form, idEmpresa);
+		return ResponseEntity.ok(EmpresaDto.converter(empresa));
+	}
+	
+	@GetMapping
+	public ResponseEntity<?> listarTodasEmpresas() {
+		List<Empresa> empresas = empresaRepository.findAll();
+		List<EmpresaDto> empresaDto = new ArrayList<>();
+		empresas.forEach(empresa -> empresaDto.add(EmpresaDto.converter(empresa)));
 		
-		UsuarioEmpresa usuario = form.getUsuario().converterUsuario(empresaCadastrada, perfilService);
-		usuarioRepository.save(usuario);
-		
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(empresaDto);
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<?> listar(@PathVariable String id) {
+		return ResponseEntity.ok(EmpresaDto.converter(empresaService.verificarSeEmpresaExiste(id)));
 	}
 }
