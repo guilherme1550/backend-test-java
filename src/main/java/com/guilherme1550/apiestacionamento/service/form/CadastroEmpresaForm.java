@@ -1,4 +1,4 @@
-package com.guilherme1550.apiestacionamento.controller.form;
+package com.guilherme1550.apiestacionamento.service.form;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class CadastroEmpresaForm {
 	private List<CadastroTelefoneEmpresaForm> telefone;
 	
 	@Valid
-	private CadastroUsuarioEmpresaForm usuario;
+	private List<CadastroUsuarioEmpresaForm> usuario;
 
 	public String getNome() {
 		return nome;
@@ -61,11 +61,11 @@ public class CadastroEmpresaForm {
 		this.endereco = endereco;
 	}
 
-	public CadastroUsuarioEmpresaForm getUsuario() {
+	public List<CadastroUsuarioEmpresaForm> getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(CadastroUsuarioEmpresaForm usuario) {
+	public void setUsuario(List<CadastroUsuarioEmpresaForm> usuario) {
 		this.usuario = usuario;
 	}
 
