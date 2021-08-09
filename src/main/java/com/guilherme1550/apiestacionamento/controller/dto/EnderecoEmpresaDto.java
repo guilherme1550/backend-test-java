@@ -3,7 +3,7 @@ package com.guilherme1550.apiestacionamento.controller.dto;
 import com.guilherme1550.apiestacionamento.model.EnderecoEmpresa;
 
 public class EnderecoEmpresaDto {
-	private String idEnderecoEstacionamento;
+	private String idEnderecoEmpresa;
 	private String cep;
 	private String uf;
 	private String bairro;
@@ -12,7 +12,7 @@ public class EnderecoEmpresaDto {
 	private String complemento;
 	
 	public EnderecoEmpresaDto(EnderecoEmpresa enderecoEmpresa) {
-		this.idEnderecoEstacionamento = enderecoEmpresa.getId();
+		this.idEnderecoEmpresa = enderecoEmpresa.getId();
 		this.cep = enderecoEmpresa.getCep();
 		this.uf = enderecoEmpresa.getUf();
 		this.bairro = enderecoEmpresa.getBairro();
@@ -21,8 +21,8 @@ public class EnderecoEmpresaDto {
 		this.complemento = enderecoEmpresa.getComplemento();
 	}
 
-	public String getIdEnderecoEstacionamento() {
-		return idEnderecoEstacionamento;
+	public String getIdEnderecoEmpresa() {
+		return idEnderecoEmpresa;
 	}
 
 	public String getCep() {
