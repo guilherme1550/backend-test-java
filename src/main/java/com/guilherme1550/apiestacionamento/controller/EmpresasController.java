@@ -1,7 +1,7 @@
 package com.guilherme1550.apiestacionamento.controller;
 
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.validation.Valid;
@@ -20,7 +20,6 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.guilherme1550.apiestacionamento.controller.dto.EmpresaDto;
 import com.guilherme1550.apiestacionamento.model.Empresa;
-import com.guilherme1550.apiestacionamento.repository.EmpresaRepository;
 import com.guilherme1550.apiestacionamento.service.EmpresaService;
 import com.guilherme1550.apiestacionamento.service.form.AtualizaEmpresaForm;
 import com.guilherme1550.apiestacionamento.service.form.CadastroEmpresaForm;
@@ -32,9 +31,6 @@ public class EmpresasController {
 	@Autowired
 	private EmpresaService empresaService;
 	
-	@Autowired
-	private EmpresaRepository empresaRepository;
-
 	@PostMapping
 	public RedirectView cadastrar(@RequestBody @Valid CadastroEmpresaForm form) {
 		RedirectView redirectListarEmpresa = empresaService.cadastrar(form);
@@ -49,11 +45,8 @@ public class EmpresasController {
 	
 	@GetMapping
 	public ResponseEntity<?> listarTodasEmpresas() {
-		List<Empresa> empresas = empresaRepository.findAll();
-		List<EmpresaDto> empresaDto = new ArrayList<>();
-		empresas.forEach(empresa -> empresaDto.add(EmpresaDto.converter(empresa)));
-		
-		return ResponseEntity.ok(empresaDto);
+		List<Empresa> empresas = empresaService.listarTodasEmpresas();
+		return ResponseEntity.ok(EmpresaDto.converterTodasEmpresas(empresas));
 	}
 	
 	@GetMapping("/{id}")

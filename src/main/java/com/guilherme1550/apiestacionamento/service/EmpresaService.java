@@ -121,6 +121,10 @@ public class EmpresaService {
 
 		return empresaSalva;
 	}
+	
+	public List<Empresa> listarTodasEmpresas() {
+		return empresaRepository.findAll();
+	}
 
 	public Empresa verificarSeEmpresaExiste(String idEmpresa) {
 		Optional<Empresa> empresa = empresaRepository.findById(idEmpresa);
