@@ -1,7 +1,6 @@
 package com.guilherme1550.apiestacionamento.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -9,20 +8,20 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
-import com.guilherme1550.apiestacionamento.controller.dto.ListaEstacionamentosDto;
-import com.guilherme1550.apiestacionamento.controller.form.CadastroEstacionamentoForm;
-import com.guilherme1550.apiestacionamento.model.EnderecoEstacionamento;
+import com.guilherme1550.apiestacionamento.controller.dto.EstacionamentoDto;
 import com.guilherme1550.apiestacionamento.model.Estacionamento;
-import com.guilherme1550.apiestacionamento.model.TelefoneEstacionamento;
 import com.guilherme1550.apiestacionamento.repository.EnderecoEstacionamentoRepository;
 import com.guilherme1550.apiestacionamento.repository.EstacionamentoRepository;
 import com.guilherme1550.apiestacionamento.repository.TelefoneEstacionamentoRepository;
 import com.guilherme1550.apiestacionamento.service.EstacionamentoService;
+import com.guilherme1550.apiestacionamento.service.form.CadastroEstacionamentoForm;
 
 @RestController
 @RequestMapping("/estacionamentos")
@@ -36,38 +35,25 @@ public class EstacionamentosController {
 
 	@Autowired
 	TelefoneEstacionamentoRepository telefoneEstacionamentoRepository;
-	
+
 	@Autowired
 	EstacionamentoService estacionamentoService;
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<?> cadastrar(@RequestBody @Valid CadastroEstacionamentoForm form) {
-		
-		String mensagem = estacionamentoService.verificarSeEmailOuCnpjExiste(form.getEmail(), form.getCnpj());
-		if (mensagem != null)
-			return ResponseEntity.badRequest().body(mensagem);
-		
-		Estacionamento estacionamento = form.converterEstacionamento();
-		Estacionamento estacionamentoCadastrado = estacionamentoRepository.save(estacionamento);
-
-		List<EnderecoEstacionamento> enderecoEstacionamento = form.getEndereco().stream()
-				.map(endereco -> endereco.converterEnderecoEstacionamento(estacionamentoCadastrado))
-				.collect(Collectors.toList());
-		enderecoEstacionamento.forEach(endereco -> enderecoEstacionamentoRepository.save(endereco));
-
-		List<TelefoneEstacionamento> telefoneEstacionamento = form.getTelefone().stream()
-				.map(telefone -> telefone.converterTelefoneEstacionamento(estacionamentoCadastrado))
-				.collect(Collectors.toList());
-		telefoneEstacionamento.forEach(telefone -> telefoneEstacionamentoRepository.save(telefone));
-
-		return ResponseEntity.ok().build();
+	public RedirectView cadastrar(@RequestBody @Valid CadastroEstacionamentoForm form) {
+		return estacionamentoService.cadastrar(form);
 	}
+
+//	@GetMapping
+//	public ResponseEntity<?> listarTodosEstacionamentos() {
+//		List<Estacionamento> estacionamentos = estacionamentoRepository.findAll();
+//		return ResponseEntity.ok(EstacionamentoDto.converter(estacionamentos));
+//	}
 	
-	@GetMapping
-	public ResponseEntity<?> listarTodosEstacionamentos() {
-		List<Estacionamento> estacionamentos = estacionamentoRepository.findAll();
-		
-		return ResponseEntity.ok(ListaEstacionamentosDto.converter(estacionamentos));
+	@GetMapping("{id}")
+	public ResponseEntity<?> listar(@PathVariable String id) {
+		return ResponseEntity.ok(EstacionamentoDto.converter(estacionamentoService.verificarSeEstacionamentoExiste(id)));
 	}
 }
+
