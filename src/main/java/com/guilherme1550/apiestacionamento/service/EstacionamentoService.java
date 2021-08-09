@@ -61,8 +61,8 @@ public class EstacionamentoService {
 		return estacionamentos;
 	}
 	
-	public Estacionamento listar(String id) {
-		return this.verificarSeEstacionamentoExiste(id);
+	public void deletar(String id) {
+		estacionamentoRepository.delete(this.verificarSeEstacionamentoExiste(id));
 	}
 	
 	public Estacionamento verificarSeEstacionamentoExiste(String idEstacionamento) {

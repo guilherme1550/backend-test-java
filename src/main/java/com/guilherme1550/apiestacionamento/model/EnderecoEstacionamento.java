@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 public class EnderecoEstacionamento {
@@ -43,6 +45,7 @@ public class EnderecoEstacionamento {
 	private Integer qtdVagasCarro;
 
 	@ManyToOne()
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Estacionamento estacionamento;
 
 	public EnderecoEstacionamento() {
