@@ -54,7 +54,7 @@ public class EmpresaService {
 	
 	@javax.transaction.Transactional
 	public RedirectView cadastrar(CadastroEmpresaForm form) {
-		this.verificarSeCnpjExiste(null);
+		this.verificarSeCnpjExiste(form.getCnpj());
 		form.getUsuario().forEach(usuario -> usuarioService.verificarSeEmailExiste(usuario.getEmail()));
 		
 		Empresa empresa = form.converterEmpresa();
