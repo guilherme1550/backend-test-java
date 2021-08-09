@@ -1,6 +1,5 @@
 package com.guilherme1550.apiestacionamento.controller.dto;
 
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,7 +13,8 @@ public class EstacionamentoDto {
 	private List<EnderecoEstacionamentoDto> enderecoEstacionamento;
 	private List<TelefoneEstacionamentoDto> telefoneEstacionamento;
 
-	public EstacionamentoDto(Estacionamento estacionamento, List<EnderecoEstacionamentoDto> enderecoEstacionamentoDto, List<TelefoneEstacionamentoDto> telefoneEstacionamentoDto) {
+	public EstacionamentoDto(Estacionamento estacionamento, List<EnderecoEstacionamentoDto> enderecoEstacionamentoDto,
+			List<TelefoneEstacionamentoDto> telefoneEstacionamentoDto) {
 		this.id = estacionamento.getId();
 		this.nome = estacionamento.getNome();
 		this.cnpj = estacionamento.getCnpj();
@@ -50,11 +50,22 @@ public class EstacionamentoDto {
 	public static EstacionamentoDto converter(Estacionamento estacionamento) {
 		List<EnderecoEstacionamentoDto> enderecoEstacionamentoDto = estacionamento.getEnderecoEstacionamento().stream()
 				.map(endereco -> new EnderecoEstacionamentoDto(endereco)).collect(Collectors.toList());
-		
+
 		List<TelefoneEstacionamentoDto> telefoneEstacionamentoDto = estacionamento.getTelefoneEstacionamento().stream()
 				.map(telefone -> new TelefoneEstacionamentoDto(telefone)).collect(Collectors.toList());
-		
+
 		return new EstacionamentoDto(estacionamento, enderecoEstacionamentoDto, telefoneEstacionamentoDto);
+	}
+
+	public static List<EstacionamentoDto> converterTodosEstacionamentos(List<Estacionamento> estacionamentos) {
+		List<EstacionamentoDto> estacionamentosDto = estacionamentos.stream()
+				.map(estacionamento -> new EstacionamentoDto(estacionamento,
+						estacionamento.getEnderecoEstacionamento().stream()
+								.map(endereco -> new EnderecoEstacionamentoDto(endereco)).collect(Collectors.toList()),
+						estacionamento.getTelefoneEstacionamento().stream()
+								.map(telefone -> new TelefoneEstacionamentoDto(telefone)).collect(Collectors.toList())))
+				.collect(Collectors.toList());
+		return estacionamentosDto;
 	}
 
 }

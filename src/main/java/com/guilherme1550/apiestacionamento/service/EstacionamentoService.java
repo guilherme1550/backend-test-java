@@ -53,6 +53,14 @@ public class EstacionamentoService {
 		return redirectView;
 	}
 	
+	public List<Estacionamento> listarTodosEstacionamentos() {
+		List<Estacionamento> estacionamentos = estacionamentoRepository.findAll();
+		if (estacionamentos.size() == 0) {
+			throw new EstacionamentoException("Nenhum estacionamento cadastrado!");
+		}
+		return estacionamentos;
+	}
+	
 	public Estacionamento listar(String id) {
 		return this.verificarSeEstacionamentoExiste(id);
 	}
