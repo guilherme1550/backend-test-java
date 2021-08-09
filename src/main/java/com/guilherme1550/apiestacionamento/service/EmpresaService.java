@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.guilherme1550.apiestacionamento.model.Empresa;
 import com.guilherme1550.apiestacionamento.model.EnderecoEmpresa;
@@ -52,7 +52,7 @@ public class EmpresaService {
 
 	
 	@javax.transaction.Transactional
-	public Empresa cadastrar(CadastroEmpresaForm form) {
+	public RedirectView cadastrar(CadastroEmpresaForm form) {
 		this.verificarSeCnpjExiste(null);
 		form.getUsuario().forEach(usuario -> usuarioService.verificarSeEmailExiste(usuario.getEmail()));
 		
@@ -71,8 +71,10 @@ public class EmpresaService {
 				.map(usuario -> usuario.converterUsuario(empresaCadastrada, perfilService)).collect(Collectors.toList());
 		usuarioEmpresa.forEach(usuario -> usuarioEmpresaRepository.save(usuario));
 		
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http://localhost:8080/empresas/" + empresaCadastrada.getId());
+		return redirectView;
 		
-		return empresaCadastrada;
 	}
 
 	public Empresa atualizar(AtualizaEmpresaForm form, String idEmpresa) {
