@@ -37,16 +37,8 @@ public class EmpresasController {
 
 	@PostMapping
 	public RedirectView cadastrar(@RequestBody @Valid CadastroEmpresaForm form) {
-		Empresa empresa = empresaService.cadastrar(form);
-
-//		return ResponseEntity.created(URI.create("/empresas/" + empresa.getId())).build();
-//		return ResponseEntity.status(HttpStatus.CREATED).location(URI.create("http://localhost:8080/empresas/" + empresa.getId())).build();
-//		return new RedirectView().setUrl("http://localhost:8080/empresas/" + empresa.getId());
-//		return ResponseEntity.
-		
-		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:8080/empresas/" + empresa.getId());
-		return redirectView;
+		RedirectView redirectListarEmpresa = empresaService.cadastrar(form);
+		return redirectListarEmpresa;
 	}
 
 	@PutMapping("/{idEmpresa}")
