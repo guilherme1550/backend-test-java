@@ -19,6 +19,7 @@ import com.guilherme1550.apiestacionamento.repository.UsuarioEmpresaRepository;
 import com.guilherme1550.apiestacionamento.service.form.AtualizaEmpresaForm;
 import com.guilherme1550.apiestacionamento.service.form.CadastroEmpresaForm;
 import com.guilherme1550.apiestacionamento.service.validation.empresa.CnpjExistenteException;
+import com.guilherme1550.apiestacionamento.service.validation.empresa.EmpresaException;
 import com.guilherme1550.apiestacionamento.service.validation.empresa.EmpresaNaoCadastradaException;
 import com.guilherme1550.apiestacionamento.service.validation.empresa.EnderecoEmpresaException;
 import com.guilherme1550.apiestacionamento.service.validation.empresa.TelefoneEmpresaException;
@@ -123,7 +124,11 @@ public class EmpresaService {
 	}
 	
 	public List<Empresa> listarTodasEmpresas() {
-		return empresaRepository.findAll();
+		List<Empresa> empresas = empresaRepository.findAll();
+		if (empresas.size() == 0) {
+			throw new EmpresaException("Nenhuma Empresa Cadastrada!");
+		}
+		return empresas;
 	}
 
 	public Empresa verificarSeEmpresaExiste(String idEmpresa) {

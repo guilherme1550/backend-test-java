@@ -22,4 +22,11 @@ public class ErroEmpresaHandler {
 	public ResponseEntity<?> handle(EmailExistenteException exception) {
 		return ResponseEntity.badRequest().body(exception.getMessage());
 	}
+	
+	@ExceptionHandler(EmpresaException.class)
+	public ResponseEntity<?> handle(EmpresaException exception) {
+		return ResponseEntity.badRequest().body(exception.getMessage());
+	}
+	
+	
 }
