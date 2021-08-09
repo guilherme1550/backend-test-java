@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 public class TelefoneEmpresa {
@@ -23,6 +25,7 @@ public class TelefoneEmpresa {
 	private String numero;
 	
 	@ManyToOne
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Empresa empresa;
 	
 	public TelefoneEmpresa() {}

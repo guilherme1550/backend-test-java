@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.view.RedirectView;
@@ -50,9 +52,12 @@ public class EmpresaService {
 	
 	@Autowired
 	private PerfilService perfilService;
+	
+	@Autowired
+	private AutenticacaoUsuarioEmpresaService autenticacaoUsuarioEmpresaService;
 
 	
-	@javax.transaction.Transactional
+	@Transactional
 	public RedirectView cadastrar(CadastroEmpresaForm form) {
 		this.verificarSeCnpjExiste(form.getCnpj());
 		form.getUsuario().forEach(usuario -> usuarioService.verificarSeEmailExiste(usuario.getEmail()));
@@ -78,6 +83,7 @@ public class EmpresaService {
 		
 	}
 
+	@Transactional
 	public Empresa atualizar(AtualizaEmpresaForm form, String idEmpresa) {
 
 		// --- Validações ---
@@ -129,6 +135,17 @@ public class EmpresaService {
 			throw new EmpresaException("Nenhuma Empresa Cadastrada!");
 		}
 		return empresas;
+	}
+	
+	@Transactional
+	public void deletar(String id) {
+		Empresa empresa = this.verificarSeEmpresaExiste(id);
+		
+		// --- Verifica se o token pertence a mesma Empresa que será deletada --- 
+		if (!empresa.getId().equals(autenticacaoUsuarioEmpresaService.getEmpresa().getId())) {
+			throw new EmpresaException("Não é possível deletar essa Empresa!");
+		}
+		empresaRepository.delete(empresa);
 	}
 
 	public Empresa verificarSeEmpresaExiste(String idEmpresa) {
