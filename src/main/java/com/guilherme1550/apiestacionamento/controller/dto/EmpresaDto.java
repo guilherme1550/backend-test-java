@@ -59,4 +59,10 @@ public class EmpresaDto {
 		
 		return new EmpresaDto(empresa, enderecoEmpresaDto, telefoneEmpresaDto, usuarioEmpresaDto);
 	}
+	
+	public static List<EmpresaDto> converterTodasEmpresas(List<Empresa> empresas) {
+		List<EmpresaDto> empresaDto = new ArrayList<>();
+		empresas.forEach(empresa -> empresaDto.add(converter(empresa)));
+		return empresaDto;
+	}
 }
