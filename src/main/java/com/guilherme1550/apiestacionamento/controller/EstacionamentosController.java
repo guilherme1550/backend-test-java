@@ -1,6 +1,5 @@
 package com.guilherme1550.apiestacionamento.controller;
 
-import java.util.List;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.guilherme1550.apiestacionamento.controller.dto.EstacionamentoDto;
-import com.guilherme1550.apiestacionamento.model.Estacionamento;
 import com.guilherme1550.apiestacionamento.repository.EnderecoEstacionamentoRepository;
 import com.guilherme1550.apiestacionamento.repository.EstacionamentoRepository;
 import com.guilherme1550.apiestacionamento.repository.TelefoneEstacionamentoRepository;
@@ -45,15 +43,14 @@ public class EstacionamentosController {
 		return estacionamentoService.cadastrar(form);
 	}
 
-//	@GetMapping
-//	public ResponseEntity<?> listarTodosEstacionamentos() {
-//		List<Estacionamento> estacionamentos = estacionamentoRepository.findAll();
-//		return ResponseEntity.ok(EstacionamentoDto.converter(estacionamentos));
-//	}
-	
+	@GetMapping
+	public ResponseEntity<?> listarTodosEstacionamentos() {
+		return ResponseEntity.ok(EstacionamentoDto.converterTodosEstacionamentos(estacionamentoService.listarTodosEstacionamentos()));
+	}
+
 	@GetMapping("{id}")
 	public ResponseEntity<?> listar(@PathVariable String id) {
-		return ResponseEntity.ok(EstacionamentoDto.converter(estacionamentoService.verificarSeEstacionamentoExiste(id)));
+		return ResponseEntity
+				.ok(EstacionamentoDto.converter(estacionamentoService.verificarSeEstacionamentoExiste(id)));
 	}
 }
-
