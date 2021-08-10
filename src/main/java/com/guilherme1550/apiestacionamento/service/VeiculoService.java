@@ -3,6 +3,8 @@ package com.guilherme1550.apiestacionamento.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,7 @@ public class VeiculoService {
 	@Autowired
 	private AutenticacaoUsuarioEmpresaService autenticacaoUsuarioEmpresaService;
 
+	@Transactional
 	public Veiculo cadastrar(CadastroVeiculoForm form) {
 		this.verificarSeVeiculoExiste(form.getPlaca());
 
@@ -37,11 +40,13 @@ public class VeiculoService {
 		Empresa empresa = autenticacaoUsuarioEmpresaService.getEmpresa();
 
 		Veiculo veiculo = form.converterVeiculo(empresa, enderecoEstacionamento);
+
 		enderecoEstacionamentoService.verificarSeEnderecoEstacionamentoPossuiVaga(enderecoEstacionamento,
 				veiculo.getTipo());
 		enderecoEstacionamentoService.subtrairVaga(enderecoEstacionamento, veiculo.getTipo());
 
 		Veiculo veiculoSalvo = veiculoRepository.save(veiculo);
+		System.out.println("CHEGOU AQUI");
 		return veiculoSalvo;
 	}
 
@@ -54,6 +59,7 @@ public class VeiculoService {
 		return veiculos;
 	}
 	
+	@Transactional
 	public Veiculo atualizarEstacionamento(AtualizaVeiculoDeEstacionamentoForm form) {
 		Optional<Veiculo> veiculo = veiculoRepository.findById(form.getIdVeiculo());
 		if (!veiculo.isPresent()) {
@@ -78,6 +84,7 @@ public class VeiculoService {
 		return veiculoSalvo;
 	}
 	
+	@Transactional
 	public void remover(String id) {
 		Optional<Veiculo> veiculo = veiculoRepository.findById(id);
 		if(!veiculo.isPresent()) {

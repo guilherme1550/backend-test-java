@@ -136,9 +136,9 @@ public class EnderecoEstacionamento {
 		this.qtdVagasCarro = qtdVagasCarro;
 	}
 
-//	public Estacionamento getEstacionamento() {
-//		return estacionamento;
-//	}
+	public Estacionamento getEstacionamento() {
+		return estacionamento;
+	}
 
 	public void setEstacionamento(Estacionamento estacionamento) {
 		this.estacionamento = estacionamento;
