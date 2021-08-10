@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 public class Veiculo {
@@ -35,6 +37,7 @@ public class Veiculo {
 	private Tipo tipo;
 
 	@ManyToOne
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Empresa empresa;
 
 	@ManyToOne

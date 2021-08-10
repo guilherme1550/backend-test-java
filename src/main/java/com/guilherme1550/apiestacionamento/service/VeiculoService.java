@@ -90,6 +90,7 @@ public class VeiculoService {
 		if(!veiculo.isPresent()) {
 			throw new VeiculoNaoCadastradoException("Veículo não encontrado no sistema!");
 		}
+		enderecoEstacionamentoService.addVaga(veiculo.get().getEnderecoEstacionamento(), veiculo.get().getTipo());
 		veiculoRepository.deleteById(id);
 	}
 

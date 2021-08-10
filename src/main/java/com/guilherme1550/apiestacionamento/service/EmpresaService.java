@@ -14,10 +14,12 @@ import com.guilherme1550.apiestacionamento.model.Empresa;
 import com.guilherme1550.apiestacionamento.model.EnderecoEmpresa;
 import com.guilherme1550.apiestacionamento.model.TelefoneEmpresa;
 import com.guilherme1550.apiestacionamento.model.UsuarioEmpresa;
+import com.guilherme1550.apiestacionamento.model.Veiculo;
 import com.guilherme1550.apiestacionamento.repository.EmpresaRepository;
 import com.guilherme1550.apiestacionamento.repository.EnderecoEmpresaRepository;
 import com.guilherme1550.apiestacionamento.repository.TelefoneEmpresaRepository;
 import com.guilherme1550.apiestacionamento.repository.UsuarioEmpresaRepository;
+import com.guilherme1550.apiestacionamento.repository.VeiculoRepository;
 import com.guilherme1550.apiestacionamento.service.form.AtualizaEmpresaForm;
 import com.guilherme1550.apiestacionamento.service.form.CadastroEmpresaForm;
 import com.guilherme1550.apiestacionamento.service.validation.empresa.CnpjExistenteException;
@@ -40,47 +42,53 @@ public class EmpresaService {
 
 	@Autowired
 	private UsuarioEmpresaRepository usuarioEmpresaRepository;
-	
+
 	@Autowired
 	private EnderecoEmpresaService enderecoEmpresaService;
 
 	@Autowired
 	private TelefoneEmpresaService telefoneEmpresaService;
-	
+
+	@Autowired
+	private VeiculoRepository veiculoRepository;
+
+	@Autowired
+	private EnderecoEstacionamentoService enderecoEstacionamentoService;
+
 	@Autowired
 	private UsuarioService usuarioService;
-	
+
 	@Autowired
 	private PerfilService perfilService;
-	
+
 	@Autowired
 	private AutenticacaoUsuarioEmpresaService autenticacaoUsuarioEmpresaService;
 
-	
 	@Transactional
 	public RedirectView cadastrar(CadastroEmpresaForm form) {
 		this.verificarSeCnpjExiste(form.getCnpj());
 		form.getUsuario().forEach(usuario -> usuarioService.verificarSeEmailExiste(usuario.getEmail()));
-		
+
 		Empresa empresa = form.converterEmpresa();
 		Empresa empresaCadastrada = empresaRepository.save(empresa);
-		
+
 		List<EnderecoEmpresa> enderecoEmpresa = form.getEndereco().stream()
 				.map(endereco -> endereco.converterEnderecoEmpresa(empresaCadastrada)).collect(Collectors.toList());
 		enderecoEmpresa.forEach(endereco -> enderecoEmpresaRepository.save(endereco));
-		
+
 		List<TelefoneEmpresa> telefoneEmpresa = form.getTelefone().stream()
 				.map(telefone -> telefone.converterTelefoneEmpresa(empresaCadastrada)).collect(Collectors.toList());
 		telefoneEmpresa.forEach(telefone -> telefoneEmpresaRepository.save(telefone));
-		
+
 		List<UsuarioEmpresa> usuarioEmpresa = form.getUsuario().stream()
-				.map(usuario -> usuario.converterUsuario(empresaCadastrada, perfilService)).collect(Collectors.toList());
+				.map(usuario -> usuario.converterUsuario(empresaCadastrada, perfilService))
+				.collect(Collectors.toList());
 		usuarioEmpresa.forEach(usuario -> usuarioEmpresaRepository.save(usuario));
-		
+
 		RedirectView redirectView = new RedirectView();
 		redirectView.setUrl("http://localhost:8080/empresas/" + empresaCadastrada.getId());
 		return redirectView;
-		
+
 	}
 
 	@Transactional
@@ -128,7 +136,7 @@ public class EmpresaService {
 
 		return empresaSalva;
 	}
-	
+
 	public List<Empresa> listarTodasEmpresas() {
 		List<Empresa> empresas = empresaRepository.findAll();
 		if (empresas.size() == 0) {
@@ -136,15 +144,21 @@ public class EmpresaService {
 		}
 		return empresas;
 	}
-	
+
 	@Transactional
 	public void deletar(String id) {
 		Empresa empresa = this.verificarSeEmpresaExiste(id);
-		
-		// --- Verifica se o token pertence a mesma Empresa que será deletada --- 
+
+		// --- Verifica se o token pertence a mesma Empresa que será deletada ---
 		if (!empresa.getId().equals(autenticacaoUsuarioEmpresaService.getEmpresa().getId())) {
 			throw new EmpresaException("Não é possível deletar essa Empresa!");
 		}
+
+		// --- Add vaga nos endereços de estacionamentos, referente aos veiculos que serão excluídos ---
+		List<Veiculo> veiculos = veiculoRepository.findByEmpresaId(id);
+		veiculos.forEach(veiculo -> enderecoEstacionamentoService.addVaga(veiculo.getEnderecoEstacionamento(),
+				veiculo.getTipo()));
+
 		empresaRepository.delete(empresa);
 	}
 
@@ -163,7 +177,7 @@ public class EmpresaService {
 			throw new CnpjExistenteException("CNPJ já cadastrado!");
 		}
 	}
-	
+
 	public void confirmarEndereco(String idEmpresa, EnderecoEmpresa enderecoEmpresa) {
 		if (!enderecoEmpresa.getEmpresa().getId().equals(idEmpresa)) {
 			throw new EnderecoEmpresaException("Esta Empresa não possui este endereço!");

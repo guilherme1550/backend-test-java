@@ -69,6 +69,7 @@ public class EstacionamentoService {
 		return estacionamentos;
 	}
 
+	@Transactional
 	public Estacionamento atualizar(String id, AtualizaEstacionamentoForm form) {
 
 		// --- Validações e Atualizações ---
