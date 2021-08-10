@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ import com.guilherme1550.apiestacionamento.repository.EnderecoEstacionamentoRepo
 import com.guilherme1550.apiestacionamento.repository.EstacionamentoRepository;
 import com.guilherme1550.apiestacionamento.repository.TelefoneEstacionamentoRepository;
 import com.guilherme1550.apiestacionamento.service.EstacionamentoService;
+import com.guilherme1550.apiestacionamento.service.form.AtualizaEstacionamentoForm;
 import com.guilherme1550.apiestacionamento.service.form.CadastroEstacionamentoForm;
 
 @RestController
@@ -53,6 +55,11 @@ public class EstacionamentosController {
 	public ResponseEntity<?> listar(@PathVariable String id) {
 		return ResponseEntity
 				.ok(EstacionamentoDto.converter(estacionamentoService.verificarSeEstacionamentoExiste(id)));
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<?> atualizar(@PathVariable String id, @RequestBody @Valid AtualizaEstacionamentoForm form) {
+		return ResponseEntity.ok(EstacionamentoDto.converter(estacionamentoService.atualizar(id, form)));
 	}
 	
 	@DeleteMapping("{id}")

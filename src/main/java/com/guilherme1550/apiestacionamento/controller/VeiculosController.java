@@ -1,6 +1,7 @@
 package com.guilherme1550.apiestacionamento.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.guilherme1550.apiestacionamento.controller.dto.VeiculoDto;
 import com.guilherme1550.apiestacionamento.model.Veiculo;
 import com.guilherme1550.apiestacionamento.repository.VeiculoRepository;
 import com.guilherme1550.apiestacionamento.service.AutenticacaoUsuarioEmpresaService;
@@ -44,20 +46,20 @@ public class VeiculosController {
 	@PostMapping
 	public ResponseEntity<?> cadastrar(@RequestBody @Valid CadastroVeiculoForm form) {
 		Veiculo veiculo = veiculoService.cadastrar(form);
-		return ResponseEntity.ok(veiculo);
+		return ResponseEntity.ok(VeiculoDto.converter(veiculo));
 	}
 	
 	@GetMapping("/empresa")
 	public ResponseEntity<?> listarPorEmpresa() {
 		List<Veiculo> veiculos = veiculoService.listarPorEmpresa();
-		return ResponseEntity.ok(veiculos);
+		return ResponseEntity.ok(veiculos.stream().map(veiculo -> VeiculoDto.converter(veiculo)).collect(Collectors.toList()));
 	}
 	
 	@PatchMapping("/atualizar-estacionamento")
 	@Transactional
 	public ResponseEntity<?> atualizarEstacionamento(@RequestBody @Valid AtualizaVeiculoDeEstacionamentoForm form) {
 		Veiculo veiculo = veiculoService.atualizarEstacionamento(form);
-		return ResponseEntity.ok(veiculo);
+		return ResponseEntity.ok(VeiculoDto.converter(veiculo));
 	}
 	
 	@DeleteMapping("/{id}")
