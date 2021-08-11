@@ -1,6 +1,5 @@
 package com.guilherme1550.apiestacionamento.controller.dto;
 
-import com.guilherme1550.apiestacionamento.model.Empresa;
 import com.guilherme1550.apiestacionamento.model.Tipo;
 import com.guilherme1550.apiestacionamento.model.Veiculo;
 
@@ -11,7 +10,7 @@ public class ControleVeiculoDto {
 	private String cor;
 	private String placa;
 	private Tipo tipo;
-	private Empresa empresa;
+	private VeiculoEmpresaDto empresa;
 	
 	public ControleVeiculoDto(Veiculo veiculo) {
 		this.id = veiculo.getId();
@@ -20,7 +19,7 @@ public class ControleVeiculoDto {
 		this.cor = veiculo.getCor();
 		this.placa = veiculo.getPlaca();
 		this.tipo = veiculo.getTipo();
-		this.empresa = veiculo.getEmpresa();
+		this.empresa = new VeiculoEmpresaDto(veiculo.getEmpresa());
 	}
 
 	public String getId() {
@@ -47,7 +46,7 @@ public class ControleVeiculoDto {
 		return tipo;
 	}
 
-	public Empresa getEmpresa() {
+	public VeiculoEmpresaDto getEmpresa() {
 		return empresa;
 	}
 }
