@@ -20,6 +20,7 @@ import com.guilherme1550.apiestacionamento.model.Controle;
 import com.guilherme1550.apiestacionamento.service.ControleService;
 import com.guilherme1550.apiestacionamento.service.EnderecoEstacionamentoService;
 import com.guilherme1550.apiestacionamento.service.form.EntradaVeiculoForm;
+import com.guilherme1550.apiestacionamento.service.form.ListaControlePorHoraForm;
 import com.guilherme1550.apiestacionamento.service.form.SaidaVeiculoForm;
 
 @RestController
@@ -53,7 +54,13 @@ public class EntradaSaidaVeiculoController {
 	@GetMapping("/endereco-estacionamento/{idEnderecoEstacionamento}")
 	public ResponseEntity<?> listarPorEnderecoEstacionamento(@PathVariable String idEnderecoEstacionamento) {
 		List<Controle> controles = controleService.listarPorEnderecoEstacionamento(idEnderecoEstacionamento);
-		return ResponseEntity
-				.ok(ListaControleDto.converter(enderecoEstacionamentoService, controles));
+		return ResponseEntity.ok(ListaControleDto.converter(enderecoEstacionamentoService, controles));
+	}
+
+	@GetMapping("/endereco-estacionamento-hora/{idEnderecoEstacionamento}")
+	public ResponseEntity<?> listarPorEnderecoEstacionamentoComHora(@PathVariable String idEnderecoEstacionamento,
+			@RequestBody @Valid ListaControlePorHoraForm form) {
+		return ResponseEntity.ok(ListaControleDto.converter(enderecoEstacionamentoService,
+				controleService.listarPorEnderecoEstacionamentoComHora(idEnderecoEstacionamento, form)));
 	}
 }

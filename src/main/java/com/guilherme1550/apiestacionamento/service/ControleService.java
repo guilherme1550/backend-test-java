@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +13,7 @@ import com.guilherme1550.apiestacionamento.model.Veiculo;
 import com.guilherme1550.apiestacionamento.repository.ControleRepository;
 import com.guilherme1550.apiestacionamento.repository.VeiculoRepository;
 import com.guilherme1550.apiestacionamento.service.form.EntradaVeiculoForm;
+import com.guilherme1550.apiestacionamento.service.form.ListaControlePorHoraForm;
 import com.guilherme1550.apiestacionamento.service.form.SaidaVeiculoForm;
 import com.guilherme1550.apiestacionamento.service.validation.ControleNaoEncontradoException;
 import com.guilherme1550.apiestacionamento.service.validation.VeiculoNaoCadastradoEnderecoEstacionamentoException;
@@ -30,7 +30,7 @@ public class ControleService {
 
 	@Autowired
 	private VeiculoService veiculoService;
-	
+
 	@Autowired
 	private EnderecoEstacionamentoService enderecoEstacionamentoService;
 
@@ -44,7 +44,7 @@ public class ControleService {
 		Controle controleSalvo = controleRepository.save(controle);
 		return controleSalvo;
 	}
-	
+
 	@Transactional
 	public Controle saidaVeiculo(SaidaVeiculoForm form) {
 		Controle controle = this.verificarSeControleExiste(form.getIdControle());
@@ -53,21 +53,32 @@ public class ControleService {
 		Controle controleSalvo = controleRepository.save(controle);
 		return controleSalvo;
 	}
-	
+
 	public List<Controle> listarPorPlacaVeiculo(String idPlacaVeiculo) {
 		Veiculo veiculo = veiculoService.verificarCadastroVeiculoPorPlaca(idPlacaVeiculo);
 		List<Controle> controles = controleRepository.findByVeiculoId(veiculo.getId());
 		this.verificarSeListaControleExiste(controles);
 		return controles;
 	}
-	
+
 	public List<Controle> listarPorEnderecoEstacionamento(String idEnderecoEstacionamento) {
 		enderecoEstacionamentoService.verificarSeEnderecoEstacionamentoExiste(idEnderecoEstacionamento);
 		List<Controle> controles = controleRepository.findByEnderecoEstacionamentoId(idEnderecoEstacionamento);
 		this.verificarSeListaControleExiste(controles);
 		return controles;
 	}
-	
+
+	public List<Controle> listarPorEnderecoEstacionamentoComHora(String idEnderecoEstacionamento,
+			ListaControlePorHoraForm form) {
+		enderecoEstacionamentoService.verificarSeEnderecoEstacionamentoExiste(idEnderecoEstacionamento);
+		LocalDateTime horaInicio = LocalDateTime.parse(form.getHora());
+		LocalDateTime horaFim = horaInicio.plusHours(1);
+		System.out.println(horaInicio + " " + horaFim);
+		List<Controle> controles = controleRepository.findByEnderecoEstacionamentoAndHora(idEnderecoEstacionamento, horaInicio, horaFim);
+		this.verificarSeListaControleExiste(controles);
+		return controles;
+	}
+
 	public void verificarSeVeiculoNaoSaiuDoEstacionamento(Controle controle) {
 		if (controle.getHoraSaida() != null)
 			throw new VeiculoNaoSeEncontraNoEstacionamentoException(
@@ -80,17 +91,17 @@ public class ControleService {
 					"Veículo não está cadastrado neste Endereço de Estacionamento!");
 		}
 	}
-	
+
 	public Controle verificarSeControleExiste(String idControle) {
 		Optional<Controle> controleOptional = controleRepository.findById(idControle);
-		if(controleOptional.isEmpty()) {
+		if (controleOptional.isEmpty()) {
 			throw new ControleNaoEncontradoException("Controle não encontrado!");
 		}
 		return controleOptional.get();
 	}
-	
+
 	public void verificarSeListaControleExiste(List<Controle> controles) {
-		if(controles.size() == 0) {
+		if (controles.size() == 0) {
 			throw new ControleNaoEncontradoException("Nenhum controle encontrado!");
 		}
 	}
