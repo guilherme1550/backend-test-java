@@ -6,6 +6,7 @@ import com.guilherme1550.apiestacionamento.model.Veiculo;
 public class VeiculoDto {
 	private String id;
 	private String marca;
+	private String modelo;
 	private String cor;
 	private String placa;
 	private Tipo tipo;
@@ -15,6 +16,7 @@ public class VeiculoDto {
 	public VeiculoDto(Veiculo veiculo, VeiculoEmpresaDto empresa, VeiculoEstacionamentoDto estacionamento) {
 		this.id = veiculo.getId();
 		this.marca = veiculo.getMarca();
+		this.modelo = veiculo.getModelo();
 		this.cor = veiculo.getCor();
 		this.placa = veiculo.getPlaca();
 		this.tipo = veiculo.getTipo();
@@ -28,6 +30,10 @@ public class VeiculoDto {
 
 	public String getMarca() {
 		return marca;
+	}
+	
+	public String getModelo() {
+		return modelo;
 	}
 
 	public String getCor() {

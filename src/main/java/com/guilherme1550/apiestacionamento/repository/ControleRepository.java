@@ -15,8 +15,6 @@ public interface ControleRepository extends JpaRepository<Controle, String> {
 
 	@Query("SELECT c FROM Controle c where c.enderecoEstacionamento.id = :idEnderecoEstacionamento "
 			+ "AND c.horaEntrada >= :horaInicio AND c.horaEntrada <= :horaFim")
-//	@Query(value = "SELECT * FROM controle c WHERE c.endereco_estacionamento_id = :idEnderecoEstacionamento  "
-//			+ "AND c.hora_entrada >= :horaInicio AND c.hora_entrada <= :horaFim", nativeQuery = true)
 	List<Controle> findByEnderecoEstacionamentoAndHora(String idEnderecoEstacionamento, LocalDateTime horaInicio,
 			LocalDateTime horaFim);
 }
