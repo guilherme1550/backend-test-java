@@ -1,4 +1,4 @@
-package com.guilherme1550.apiestacionamento.service.validation;
+package com.guilherme1550.apiestacionamento.service.validation.estacionamento;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

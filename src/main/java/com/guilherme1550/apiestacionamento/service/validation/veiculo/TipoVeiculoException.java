@@ -1,4 +1,4 @@
-package com.guilherme1550.apiestacionamento.service.validation;
+package com.guilherme1550.apiestacionamento.service.validation.veiculo;
 
 public class TipoVeiculoException extends RuntimeException {
 

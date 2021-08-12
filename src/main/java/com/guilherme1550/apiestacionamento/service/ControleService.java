@@ -15,9 +15,9 @@ import com.guilherme1550.apiestacionamento.repository.VeiculoRepository;
 import com.guilherme1550.apiestacionamento.service.form.EntradaVeiculoForm;
 import com.guilherme1550.apiestacionamento.service.form.ListaControlePorHoraForm;
 import com.guilherme1550.apiestacionamento.service.form.SaidaVeiculoForm;
-import com.guilherme1550.apiestacionamento.service.validation.ControleNaoEncontradoException;
-import com.guilherme1550.apiestacionamento.service.validation.VeiculoNaoCadastradoEnderecoEstacionamentoException;
-import com.guilherme1550.apiestacionamento.service.validation.VeiculoNaoSeEncontraNoEstacionamentoException;
+import com.guilherme1550.apiestacionamento.service.validation.controle.ControleNaoEncontradoException;
+import com.guilherme1550.apiestacionamento.service.validation.controle.VeiculoNaoCadastradoEnderecoEstacionamentoException;
+import com.guilherme1550.apiestacionamento.service.validation.controle.VeiculoNaoSeEncontraNoEstacionamentoException;
 
 @Service
 public class ControleService {

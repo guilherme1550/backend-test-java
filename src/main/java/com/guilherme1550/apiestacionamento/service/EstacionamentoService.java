@@ -19,7 +19,11 @@ import com.guilherme1550.apiestacionamento.repository.EstacionamentoRepository;
 import com.guilherme1550.apiestacionamento.repository.TelefoneEstacionamentoRepository;
 import com.guilherme1550.apiestacionamento.service.form.AtualizaEstacionamentoForm;
 import com.guilherme1550.apiestacionamento.service.form.CadastroEstacionamentoForm;
+import com.guilherme1550.apiestacionamento.service.validation.estacionamento.EnderecoEstacionamentoNaoCadastradoException;
 import com.guilherme1550.apiestacionamento.service.validation.estacionamento.EstacionamentoException;
+import com.guilherme1550.apiestacionamento.service.validation.estacionamento.EstacionamentoNaoCadastradoException;
+import com.guilherme1550.apiestacionamento.service.validation.estacionamento.NenhumEstacionamentoCadastradoException;
+import com.guilherme1550.apiestacionamento.service.validation.estacionamento.TelefoneEstacionamentoNaoCadastradoException;
 
 @Service
 public class EstacionamentoService {
@@ -64,7 +68,7 @@ public class EstacionamentoService {
 	public List<Estacionamento> listarTodosEstacionamentos() {
 		List<Estacionamento> estacionamentos = estacionamentoRepository.findAll();
 		if (estacionamentos.size() == 0) {
-			throw new EstacionamentoException("Nenhum estacionamento cadastrado!");
+			throw new NenhumEstacionamentoCadastradoException("Nenhum estacionamento cadastrado!");
 		}
 		return estacionamentos;
 	}
@@ -81,6 +85,7 @@ public class EstacionamentoService {
 		form.getEndereco().forEach(endereco -> {
 			EnderecoEstacionamento enderecoEstacionamento = enderecoEstacionamentoService
 					.verificarSeEnderecoEstacionamentoExiste(endereco.getIdEnderecoEstacionamento());
+			this.confirmarEndereco(id, enderecoEstacionamento);
 			enderecoEstacionamento.setCep(endereco.getCep());
 			enderecoEstacionamento.setUf(endereco.getUf());
 			enderecoEstacionamento.setBairro(endereco.getBairro());
@@ -97,6 +102,7 @@ public class EstacionamentoService {
 		form.getTelefone().forEach(telefone -> {
 			TelefoneEstacionamento telefoneEstacionamento = telefoneEstacionamentoService
 					.verificarSeTelefoneEstacionamentoExiste(telefone.getIdTelefoneEstacionamento());
+			this.confirmarTelefone(id, telefoneEstacionamento);
 			telefoneEstacionamento.setNumero(telefone.getNumero());
 			
 			telefonesEstacionamento.add(telefoneEstacionamento);
@@ -121,7 +127,7 @@ public class EstacionamentoService {
 	public Estacionamento verificarSeEstacionamentoExiste(String idEstacionamento) {
 		Optional<Estacionamento> estacionamento = estacionamentoRepository.findById(idEstacionamento);
 		if (estacionamento.isEmpty()) {
-			throw new EstacionamentoException("Estacionamento não cadastrado!");
+			throw new EstacionamentoNaoCadastradoException("Estacionamento não cadastrado!");
 		}
 		return estacionamento.get();
 	}
@@ -134,5 +140,17 @@ public class EstacionamentoService {
 		Optional<Estacionamento> cnpjExistenteEstacionamento = estacionamentoRepository.findByCnpj(cnpj);
 		if (cnpjExistenteEstacionamento.isPresent())
 			throw new EstacionamentoException("Cnpj já cadastrado!");
+	}
+	
+	public void confirmarEndereco(String idEstacionamento, EnderecoEstacionamento enderecoEstacionamento) {
+		if (!enderecoEstacionamento.getEstacionamento().getId().equals(idEstacionamento)) {
+			throw new EnderecoEstacionamentoNaoCadastradoException("Este Estacionamento não possui este endereço!");
+		}
+	}
+	
+	public void confirmarTelefone(String idEstacionamento, TelefoneEstacionamento telefoneEstacionamento) {
+		if (!telefoneEstacionamento.getEstacionamento().getId().equals(idEstacionamento)) {
+			throw new TelefoneEstacionamentoNaoCadastradoException("Este Estacionamento não possui este telefone!");
+		}
 	}
 }

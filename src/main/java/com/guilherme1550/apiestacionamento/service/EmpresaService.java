@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.view.RedirectView;
+
 
 import com.guilherme1550.apiestacionamento.model.Empresa;
 import com.guilherme1550.apiestacionamento.model.EnderecoEmpresa;
@@ -26,6 +26,7 @@ import com.guilherme1550.apiestacionamento.service.validation.empresa.CnpjExiste
 import com.guilherme1550.apiestacionamento.service.validation.empresa.EmpresaException;
 import com.guilherme1550.apiestacionamento.service.validation.empresa.EmpresaNaoCadastradaException;
 import com.guilherme1550.apiestacionamento.service.validation.empresa.EnderecoEmpresaException;
+import com.guilherme1550.apiestacionamento.service.validation.empresa.NenhumaEmpresaCadastradaException;
 import com.guilherme1550.apiestacionamento.service.validation.empresa.TelefoneEmpresaException;
 
 @Service
@@ -56,7 +57,7 @@ public class EmpresaService {
 	private EnderecoEstacionamentoService enderecoEstacionamentoService;
 
 	@Autowired
-	private UsuarioService usuarioService;
+	private UsuarioEmpresaService usuarioService;
 
 	@Autowired
 	private PerfilService perfilService;
@@ -65,7 +66,7 @@ public class EmpresaService {
 	private AutenticacaoUsuarioEmpresaService autenticacaoUsuarioEmpresaService;
 
 	@Transactional
-	public RedirectView cadastrar(CadastroEmpresaForm form) {
+	public Empresa cadastrar(CadastroEmpresaForm form) {
 		this.verificarSeCnpjExiste(form.getCnpj());
 		form.getUsuario().forEach(usuario -> usuarioService.verificarSeEmailExiste(usuario.getEmail()));
 
@@ -85,9 +86,7 @@ public class EmpresaService {
 				.collect(Collectors.toList());
 		usuarioEmpresa.forEach(usuario -> usuarioEmpresaRepository.save(usuario));
 
-		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http://localhost:8080/empresas/" + empresaCadastrada.getId());
-		return redirectView;
+		return empresaCadastrada;
 
 	}
 
@@ -97,6 +96,8 @@ public class EmpresaService {
 		// --- Validações ---
 
 		Empresa empresa = this.verificarSeEmpresaExiste(idEmpresa);
+		// Verifica se o token pertence a mesma Empresa que será deletada
+		this.verificarToken(empresa);
 		form.getEndereco().forEach(endereco -> {
 			EnderecoEmpresa enderecoEmpresa = enderecoEmpresaService
 					.verificarSeEnderecoEmpresaExiste(endereco.getIdEnderecoEmpresa());
@@ -140,7 +141,7 @@ public class EmpresaService {
 	public List<Empresa> listarTodasEmpresas() {
 		List<Empresa> empresas = empresaRepository.findAll();
 		if (empresas.size() == 0) {
-			throw new EmpresaException("Nenhuma Empresa Cadastrada!");
+			throw new NenhumaEmpresaCadastradaException("Nenhuma Empresa Cadastrada!");
 		}
 		return empresas;
 	}
@@ -150,9 +151,7 @@ public class EmpresaService {
 		Empresa empresa = this.verificarSeEmpresaExiste(id);
 
 		// --- Verifica se o token pertence a mesma Empresa que será deletada ---
-		if (!empresa.getId().equals(autenticacaoUsuarioEmpresaService.getEmpresa().getId())) {
-			throw new EmpresaException("Não é possível deletar essa Empresa!");
-		}
+		this.verificarToken(empresa);
 
 		// --- Add vaga nos endereços de estacionamentos, referente aos veiculos que serão excluídos ---
 		List<Veiculo> veiculos = veiculoRepository.findByEmpresaId(id);
@@ -187,6 +186,12 @@ public class EmpresaService {
 	public void confirmarTelefone(String idEmpresa, TelefoneEmpresa telefoneEmpresa) {
 		if (!telefoneEmpresa.getEmpresa().getId().equals(idEmpresa)) {
 			throw new TelefoneEmpresaException("Esta Empresa não possui este telefone!");
+		}
+	}
+	
+	public void verificarToken(Empresa empresa) {
+		if (!empresa.getId().equals(autenticacaoUsuarioEmpresaService.getEmpresa().getId())) {
+			throw new EmpresaException("Não é possível realizar esta ação!");
 		}
 	}
 

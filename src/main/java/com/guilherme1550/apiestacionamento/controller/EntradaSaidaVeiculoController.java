@@ -34,31 +34,31 @@ public class EntradaSaidaVeiculoController {
 	private ControleService controleService;
 
 	@PostMapping("/entrada")
-	public ResponseEntity<?> cadastrarEntradaVeiculo(@RequestBody @Valid EntradaVeiculoForm form) {
+	public ResponseEntity<ControleDto> cadastrarEntradaVeiculo(@RequestBody @Valid EntradaVeiculoForm form) {
 		Controle controle = controleService.entradaVeiculo(form);
 		return ResponseEntity.ok(ControleDto.converter(enderecoEstacionamentoService, controle));
 	}
 
 	@PostMapping("/saida")
-	public ResponseEntity<?> cadastrarSaidaVeiculo(@RequestBody @Valid SaidaVeiculoForm form) {
+	public ResponseEntity<ControleDto> cadastrarSaidaVeiculo(@RequestBody @Valid SaidaVeiculoForm form) {
 		Controle controle = controleService.saidaVeiculo(form);
 		return ResponseEntity.ok(ControleDto.converter(enderecoEstacionamentoService, controle));
 	}
 
 	@GetMapping("/veiculo/{idPlacaVeiculo}")
-	public ResponseEntity<?> listarPorPlacaVeiculo(@PathVariable String idPlacaVeiculo) {
+	public ResponseEntity<List<ListaControleDto>> listarPorPlacaVeiculo(@PathVariable String idPlacaVeiculo) {
 		List<Controle> controles = controleService.listarPorPlacaVeiculo(idPlacaVeiculo);
 		return ResponseEntity.ok(ListaControleDto.converter(enderecoEstacionamentoService, controles));
 	}
 
 	@GetMapping("/endereco-estacionamento/{idEnderecoEstacionamento}")
-	public ResponseEntity<?> listarPorEnderecoEstacionamento(@PathVariable String idEnderecoEstacionamento) {
+	public ResponseEntity<List<ListaControleDto>> listarPorEnderecoEstacionamento(@PathVariable String idEnderecoEstacionamento) {
 		List<Controle> controles = controleService.listarPorEnderecoEstacionamento(idEnderecoEstacionamento);
 		return ResponseEntity.ok(ListaControleDto.converter(enderecoEstacionamentoService, controles));
 	}
 
 	@GetMapping("/endereco-estacionamento-hora/{idEnderecoEstacionamento}")
-	public ResponseEntity<?> listarPorEnderecoEstacionamentoComHora(@PathVariable String idEnderecoEstacionamento,
+	public ResponseEntity<List<ListaControleDto>> listarPorEnderecoEstacionamentoComHora(@PathVariable String idEnderecoEstacionamento,
 			@RequestBody @Valid ListaControlePorHoraForm form) {
 		return ResponseEntity.ok(ListaControleDto.converter(enderecoEstacionamentoService,
 				controleService.listarPorEnderecoEstacionamentoComHora(idEnderecoEstacionamento, form)));

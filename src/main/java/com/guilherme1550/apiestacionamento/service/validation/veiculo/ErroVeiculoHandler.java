@@ -1,8 +1,11 @@
-package com.guilherme1550.apiestacionamento.service.validation;
+package com.guilherme1550.apiestacionamento.service.validation.veiculo;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.guilherme1550.apiestacionamento.service.validation.controle.VeiculoNaoCadastradoEnderecoEstacionamentoException;
 
 @RestControllerAdvice
 public class ErroVeiculoHandler {
@@ -19,7 +22,7 @@ public class ErroVeiculoHandler {
 	
 	@ExceptionHandler(VeiculoNaoCadastradoException.class)
 	public ResponseEntity<?> handle(VeiculoNaoCadastradoException exception) {
-		return ResponseEntity.badRequest().body(exception.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
 	}
 	
 	@ExceptionHandler(VeiculoJaCadastradoNoEstacionamentoException.class)
@@ -29,7 +32,7 @@ public class ErroVeiculoHandler {
 	
 	@ExceptionHandler(VeiculoNaoCadastradoEnderecoEstacionamentoException.class)
 	public ResponseEntity<?> handle(VeiculoNaoCadastradoEnderecoEstacionamentoException exception) {
-		return ResponseEntity.badRequest().body(exception.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
 	}
 	
 }

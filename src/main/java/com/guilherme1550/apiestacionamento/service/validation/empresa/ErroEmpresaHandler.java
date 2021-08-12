@@ -1,5 +1,6 @@
 package com.guilherme1550.apiestacionamento.service.validation.empresa;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -10,7 +11,7 @@ public class ErroEmpresaHandler {
 
 	@ExceptionHandler(EmpresaNaoCadastradaException.class)
 	public ResponseEntity<?> handle(EmpresaNaoCadastradaException exception) {
-		return ResponseEntity.badRequest().body(exception.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
 	}
 	
 	@ExceptionHandler(CnpjExistenteException.class)
@@ -23,10 +24,14 @@ public class ErroEmpresaHandler {
 		return ResponseEntity.badRequest().body(exception.getMessage());
 	}
 	
+	@ExceptionHandler(NenhumaEmpresaCadastradaException.class)
+	public ResponseEntity<?> handle(NenhumaEmpresaCadastradaException exception) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+	}
+	
 	@ExceptionHandler(EmpresaException.class)
 	public ResponseEntity<?> handle(EmpresaException exception) {
 		return ResponseEntity.badRequest().body(exception.getMessage());
 	}
-	
-	
+
 }
