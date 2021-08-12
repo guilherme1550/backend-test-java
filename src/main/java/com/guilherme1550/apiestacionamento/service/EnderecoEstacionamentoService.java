@@ -11,9 +11,9 @@ import com.guilherme1550.apiestacionamento.model.EnderecoEstacionamento;
 import com.guilherme1550.apiestacionamento.model.Tipo;
 import com.guilherme1550.apiestacionamento.repository.EnderecoEstacionamentoRepository;
 import com.guilherme1550.apiestacionamento.repository.EstacionamentoRepository;
-import com.guilherme1550.apiestacionamento.service.validation.VagasParaCarroInsuficienteException;
-import com.guilherme1550.apiestacionamento.service.validation.VagasParaMotoInsuficienteException;
 import com.guilherme1550.apiestacionamento.service.validation.estacionamento.EnderecoEstacionamentoNaoCadastradoException;
+import com.guilherme1550.apiestacionamento.service.validation.estacionamento.VagasParaCarroInsuficienteException;
+import com.guilherme1550.apiestacionamento.service.validation.estacionamento.VagasParaMotoInsuficienteException;
 
 @Service
 public class EnderecoEstacionamentoService {

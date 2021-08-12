@@ -8,11 +8,11 @@ import com.guilherme1550.apiestacionamento.model.Controle;
 import com.guilherme1550.apiestacionamento.service.EnderecoEstacionamentoService;
 
 public class ListaControleDto {
-	String idControle;
-	LocalDateTime horaEntrada;
-	LocalDateTime horaSaida;
-	ControleVeiculoDto veiculo;
-	ControleEstacionamentoDto estacionamento;
+	private String idControle;
+	private LocalDateTime horaEntrada;
+	private LocalDateTime horaSaida;
+	private ControleVeiculoDto veiculo;
+	private ControleEstacionamentoDto estacionamento;
 
 	public ListaControleDto(Controle controle, ControleVeiculoDto veiculo,
 			ControleEstacionamentoDto estacionamento) {

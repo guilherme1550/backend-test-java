@@ -1,6 +1,8 @@
 package com.guilherme1550.apiestacionamento.controller;
 
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.view.RedirectView;
 
 import com.guilherme1550.apiestacionamento.controller.dto.EstacionamentoDto;
 import com.guilherme1550.apiestacionamento.repository.EnderecoEstacionamentoRepository;
@@ -42,29 +43,30 @@ public class EstacionamentosController {
 
 	@PostMapping
 	@Transactional
-	public RedirectView cadastrar(@RequestBody @Valid CadastroEstacionamentoForm form) {
-		return estacionamentoService.cadastrar(form);
+	public ResponseEntity<?> cadastrar(@RequestBody @Valid CadastroEstacionamentoForm form) {
+		estacionamentoService.cadastrar(form);
+		return ResponseEntity.ok().build();
 	}
 
 	@GetMapping
-	public ResponseEntity<?> listarTodosEstacionamentos() {
+	public ResponseEntity<List<EstacionamentoDto>> listarTodosEstacionamentos() {
 		return ResponseEntity.ok(EstacionamentoDto.converterTodosEstacionamentos(estacionamentoService.listarTodosEstacionamentos()));
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> listar(@PathVariable String id) {
+	public ResponseEntity<EstacionamentoDto> listar(@PathVariable String id) {
 		return ResponseEntity
 				.ok(EstacionamentoDto.converter(estacionamentoService.verificarSeEstacionamentoExiste(id)));
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<?> atualizar(@PathVariable String id, @RequestBody @Valid AtualizaEstacionamentoForm form) {
+	public ResponseEntity<EstacionamentoDto> atualizar(@PathVariable String id, @RequestBody @Valid AtualizaEstacionamentoForm form) {
 		return ResponseEntity.ok(EstacionamentoDto.converter(estacionamentoService.atualizar(id, form)));
 	}
 	
 	@DeleteMapping("{id}")
 	public ResponseEntity<?> deletar(@PathVariable String id) {
 		estacionamentoService.deletar(id);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok("Estacionamento excluído com sucesso!");
 	}
 }

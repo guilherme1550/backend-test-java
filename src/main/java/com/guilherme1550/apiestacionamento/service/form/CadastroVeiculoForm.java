@@ -7,7 +7,7 @@ import com.guilherme1550.apiestacionamento.model.Empresa;
 import com.guilherme1550.apiestacionamento.model.EnderecoEstacionamento;
 import com.guilherme1550.apiestacionamento.model.Tipo;
 import com.guilherme1550.apiestacionamento.model.Veiculo;
-import com.guilherme1550.apiestacionamento.service.validation.TipoVeiculoException;
+import com.guilherme1550.apiestacionamento.service.validation.veiculo.TipoVeiculoException;
 
 public class CadastroVeiculoForm {
 

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.guilherme1550.apiestacionamento.model.TelefoneEstacionamento;
 import com.guilherme1550.apiestacionamento.repository.TelefoneEstacionamentoRepository;
-import com.guilherme1550.apiestacionamento.service.validation.estacionamento.TelefoneEstacionamentoException;
+import com.guilherme1550.apiestacionamento.service.validation.estacionamento.TelefoneEstacionamentoNaoCadastradoException;
 
 @Service
 public class TelefoneEstacionamentoService {
@@ -18,7 +18,7 @@ public class TelefoneEstacionamentoService {
 	public TelefoneEstacionamento verificarSeTelefoneEstacionamentoExiste(String idTelefoneEstacionamento) {
 		Optional<TelefoneEstacionamento> telefoneEstacionamento = telefoneEstacionamentoRepository.findById(idTelefoneEstacionamento);
 		if (telefoneEstacionamento.isEmpty()) {
-			throw new TelefoneEstacionamentoException("Telefone não cadastrado no sistema!");
+			throw new TelefoneEstacionamentoNaoCadastradoException("Telefone não cadastrado no sistema!");
 		}
 		return telefoneEstacionamento.get();
 	}

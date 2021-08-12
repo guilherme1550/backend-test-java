@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,20 +45,20 @@ public class VeiculosController {
 	AutenticacaoUsuarioEmpresaService autenticacaoUsuarioEmpresaService;
 	
 	@PostMapping
-	public ResponseEntity<?> cadastrar(@RequestBody @Valid CadastroVeiculoForm form) {
+	public ResponseEntity<VeiculoDto> cadastrar(@RequestBody @Valid CadastroVeiculoForm form) {
 		Veiculo veiculo = veiculoService.cadastrar(form);
-		return ResponseEntity.ok(VeiculoDto.converter(veiculo));
+		return ResponseEntity.status(HttpStatus.CREATED).body(VeiculoDto.converter(veiculo));
 	}
 	
 	@GetMapping("/empresa")
-	public ResponseEntity<?> listarPorEmpresa() {
+	public ResponseEntity<List<VeiculoDto>> listarPorEmpresa() {
 		List<Veiculo> veiculos = veiculoService.listarPorEmpresa();
 		return ResponseEntity.ok(veiculos.stream().map(veiculo -> VeiculoDto.converter(veiculo)).collect(Collectors.toList()));
 	}
 	
 	@PatchMapping("/atualizar-estacionamento")
 	@Transactional
-	public ResponseEntity<?> atualizarEstacionamento(@RequestBody @Valid AtualizaVeiculoDeEstacionamentoForm form) {
+	public ResponseEntity<VeiculoDto> atualizarEstacionamento(@RequestBody @Valid AtualizaVeiculoDeEstacionamentoForm form) {
 		Veiculo veiculo = veiculoService.atualizarEstacionamento(form);
 		return ResponseEntity.ok(VeiculoDto.converter(veiculo));
 	}

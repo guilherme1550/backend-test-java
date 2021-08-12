@@ -50,9 +50,9 @@ public class TelefoneEstacionamento {
 		this.numero = numero;
 	}
 
-//	public Estacionamento getEstacionamento() {
-//		return estacionamento;
-//	}
+	public Estacionamento getEstacionamento() {
+		return estacionamento;
+	}
 
 	public void setEstacionamento(Estacionamento estacionamento) {
 		this.estacionamento = estacionamento;
