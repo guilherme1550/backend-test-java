@@ -2,8 +2,6 @@ package com.guilherme1550.apiestacionamento.controller;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,14 +55,12 @@ public class VeiculosController {
 	}
 	
 	@PatchMapping("/atualizar-estacionamento")
-	@Transactional
 	public ResponseEntity<VeiculoDto> atualizarEstacionamento(@RequestBody @Valid AtualizaVeiculoDeEstacionamentoForm form) {
 		Veiculo veiculo = veiculoService.atualizarEstacionamento(form);
 		return ResponseEntity.ok(VeiculoDto.converter(veiculo));
 	}
 	
 	@DeleteMapping("/{id}")
-	@Transactional
 	public ResponseEntity<?> remover(@PathVariable String id) {
 		veiculoService.remover(id);
 		return ResponseEntity.ok("Veículo excluído com sucesso!");
