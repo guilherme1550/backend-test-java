@@ -41,6 +41,7 @@ public class Veiculo {
 	private Empresa empresa;
 
 	@ManyToOne
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private EnderecoEstacionamento enderecoEstacionamento;
 
 	public Veiculo() {

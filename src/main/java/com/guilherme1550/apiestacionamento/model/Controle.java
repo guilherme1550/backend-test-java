@@ -32,6 +32,7 @@ public class Controle {
 	private Veiculo veiculo;
 	
 	@ManyToOne
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private EnderecoEstacionamento enderecoEstacionamento;
 
 	public Controle() {}
