@@ -46,7 +46,6 @@ public class EstacionamentosController {
 	@Transactional
 	public ResponseEntity<?> cadastrar(@RequestBody @Valid CadastroEstacionamentoForm form) {
 		estacionamentoService.cadastrar(form);
-//		return ResponseEntity.ok().build();
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
