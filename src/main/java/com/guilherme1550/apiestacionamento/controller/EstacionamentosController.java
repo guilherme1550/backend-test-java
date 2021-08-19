@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +46,8 @@ public class EstacionamentosController {
 	@Transactional
 	public ResponseEntity<?> cadastrar(@RequestBody @Valid CadastroEstacionamentoForm form) {
 		estacionamentoService.cadastrar(form);
-		return ResponseEntity.ok().build();
+//		return ResponseEntity.ok().build();
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 	@GetMapping
