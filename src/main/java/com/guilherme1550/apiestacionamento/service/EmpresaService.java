@@ -96,7 +96,7 @@ public class EmpresaService {
 		// --- Validações ---
 
 		Empresa empresa = this.verificarSeEmpresaExiste(idEmpresa);
-		// Verifica se o token pertence a mesma Empresa que será deletada
+		// Verifica se o token pertence a mesma Empresa que será atualizado
 		this.verificarToken(empresa);
 		form.getEndereco().forEach(endereco -> {
 			EnderecoEmpresa enderecoEmpresa = enderecoEmpresaService
